@@ -15,19 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-#define B 3950 // B-коэффициент
-#define SERIAL_R 370 // сопротивление последовательного резистора, 370 Ом
-#define THERMISTOR_R 10000 // номинальное сопротивления термистора, 10 кОм
-#define NOMINAL_T 25 // номинальная температура (при которой TR = 10 кОм)
-
-#define WF_RESET_KEY GPIO_ID_PIN(0)
-#define WF_DIR_LED   GPIO_ID_PIN(5)
-#define RELE_PIN   GPIO_ID_PIN(4)
-
-#define W1_io12 GPIO_ID_PIN(12)
-#define W2_io13 GPIO_ID_PIN(13)
-
+#include "define.h"
+#include "UART.h"
 
 
 /***********************************************************
@@ -54,46 +43,17 @@ STATIC VOID uart_timer_cb(UINT timerID,PVOID pTimerArg);//handler my timer
 /***********************************************************
 *************************variable **************************
 ***********************************************************/
-int REGULATOR=0;
+int REGULATOR;
 int ISTOCHNIK,LOW_LEVEL,HIGH_LEVEL,temp_min,temp_max;
+
 bool def_protechki, RELE_stat;
-bool first_iterator=true;
-int U,U_MIN,U_MAX,I_MAX;
-float I,P_calc,P,ENERGY;
 
-   
+int U_MIN,U_MAX,I_MAX;
+float ENERGY;
 
-/*
-int REGULATOR=0;
-int ISTOCHNIK=0;
-int LOW_LEVEL=0;
-int HIGH_LEVEL=0;
-int temp_min=0;
-int temp_max=0;
-bool def_protechki=false;
-*/
-
-
-//REGULATOR                  
-//0 Off
-//1 Heater
-//2 Conditioner
-//3 Inrange
-//4 OutRange
-//5 HeaterW
-//6 ConditionerW
-//7 InrangeW
-//8 OutRangeW
-//9 Filling
-//10 Drain
-//ISTOCHNIK
-//0 w1
-//1 w2
-
-//3 w_or
-//4 w_and
 LED_HANDLE Rele = NULL;
 LED_HANDLE light = NULL;
+
 
 // call back function
 VOID set_firmware_tp(IN OUT CHAR *firm_name, IN OUT CHAR *firm_ver)//system func
@@ -124,7 +84,7 @@ VOID prod_test(BOOL flag,CHAR rssi)//system func
 
 VOID app_init(VOID)//system func
 {
-    set_console(TRUE);//СЋР°СЂС‚0
+    set_console(TRUE);//uart 0(DEBUG)
     app_cfg_set(WCM_LOW_POWER,prod_test);
 }
 
@@ -444,6 +404,11 @@ STATIC OPERATE_RET device_differ_init(VOID)////system init func (can change)
 print_port_init(UART1);
 user_uart_raw_full_init(BIT_RATE_4800, UART_WordLength_8b,USART_Parity_Even,USART_StopBits_1);
    
+adc_config_t adc_config;
+adc_config.mode = ADC_READ_TOUT_MODE;
+adc_config.clk_div = 8; 
+adc_init(&adc_config);
+
 
     return OPRT_OK;
 }
@@ -494,107 +459,50 @@ break;
 
 int read_adc_value()
 {
-/////////////////////////////////////////////////
-    adc_config_t adc_config;
-    adc_config.mode = ADC_READ_TOUT_MODE;
-    adc_config.clk_div = 8; 
-    adc_init(&adc_config);
-    uint16_t adc_data[100];
-    adc_read(&adc_data[0]);
-////////////////////////////////////////////////// 
-
+uint16_t adc_data[100];
+adc_read(&adc_data[0]);
 PR_DEBUG("ADC:%d", adc_data[0]);
 int t = adc_data[0];
 
-Free(&adc_config);
-
-float tr = 1023.0 / t - 1;
+float tr = 1023.0 / t - 1;//cопротивление
     tr = SERIAL_R / tr*240;//240- подбором в зависимости от текущей температуры
+PR_DEBUG("RESISTANCE:%d", tr);
   
-   int temp =get_temp(tr);
-
+int temp =get_temp(tr);
+PR_DEBUG("temp:%d", temp);
 return temp ;
 }
 
 
 
 
-STATIC VOID read_uart()
-{
-int i,i1;
-uint16 a;
-uint8 buf[50]={0};
-uint8 current_buf[24]={0};
-	U=0;I=0; P_calc=0;
-a=user_uart_read_data(buf,50);
 
-if (a!=0)
-{
-PR_DEBUG("Uart READ OK");
-PR_DEBUG("len %d",a);
-
-for(i=0;i<50;i++)
-{
-
-	int l = 50-i;
-	if (buf[i]==0x55 && l >=24 )
-		{
-PR_DEBUG("Uart current_buf FOUNDED");
-			for(i1=0;i1<=23;i1++)
-			{
-			current_buf[i1]=buf[i+i1];
-//			PR_DEBUG("current_buf[%d]     %x       %d",i1,current_buf[i1],current_buf[i1]);
-			}
-
-			int u1=get_value_3(current_buf[2],current_buf[3],current_buf[4]);
-			int u2=get_value_3(current_buf[5],current_buf[6],current_buf[7]);
-			U =u1/u2;	
-			
-//PR_DEBUG("U1 %d,%f",u1,u2);
-//PR_DEBUG("U2 %d,%f",u2,u2);	
-if(U!=0){
-                      //  PR_DEBUG("U %d",U);
-
-			int I1 = get_value_3(current_buf[8],current_buf[9],current_buf[10]);
-			int I2 = get_value_3(current_buf[11],current_buf[12],current_buf[13]);
-			 I =	(float)I1/(float)I2;  
-			     
-//PR_DEBUG("I1 %d,%f",I1,I1);
-//PR_DEBUG("I2 %d,%f",I2,I2);       
-         	//	PR_DEBUG("I %d",I);
-
-			 P_calc= (float)U*I;
-			 
-//PR_DEBUG("U %d,%f",U,U);
-//PR_DEBUG("I %d,%f",I,I);   
-          //		PR_DEBUG("P_calc %d",P_calc,P_calc);
-
-			int P1 = get_value_3(current_buf[14],current_buf[15],current_buf[16]);
-			int P2 = get_value_3(current_buf[17],current_buf[18],current_buf[19]);
-			 P =(float)P1/(float)P2	;
-			
-//PR_DEBUG("P1 %d,%f",P1,P1);
-//PR_DEBUG("P2 %d,%f",P2,P2);   
- //         		PR_DEBUG("P %f %d",P,P);
-
-			float f= ((I*U)/(2.43*2.43))*(3.579/128);
-			ENERGY=(get_value_2(current_buf[21],current_buf[22]))/(f*1000*3600);
-			break;
-		}
-}  
-}
-}
-	
-}
 STATIC VOID uart_timer_cb(UINT timerID,PVOID pTimerArg)// my timer handle
 {
 if( tuya_get_gw_status() == STAT_WORK&& tuya_get_wf_status()==STAT_STA_CONN) 
 {  
 PR_DEBUG("UART TICK\n");
 read_uart();
+int U= get_U_value();
+float ENERGY=get_ENERGY_value();
+float I=get_I_value();
+float P=get_P_calc_value();
+if (U!=0)
+	  {
+		
+		if(U>=U_MAX||U<=U_MIN)
+			{
+			rele_off_msg();
+			}
+		else if(I>=I_MAX)
+			{
+			rele_off_msg();
+			}		
+	  }
+
 tuya_msg(17,(int)(ENERGY*1000),3,0);
 tuya_msg(18,(int)(I*1000),3,0);
-tuya_msg(19,(int)(P_calc*10),3,0);
+tuya_msg(19,(int)(P*10),3,0);
 tuya_msg(20,(int)(U*10),3,0);
 }
 }
@@ -610,37 +518,14 @@ tuya_msg(20,(int)(U*10),3,0);
 STATIC VOID heart_bit_timer_cb(UINT timerID,PVOID pTimerArg)// my timer handle
 {
 
-
 //if(RELE_stat){rele_on();}else if(!RELE_stat){rele_off();}
 
 if( tuya_get_gw_status() == STAT_WORK&& tuya_get_wf_status()==STAT_STA_CONN) 
 {  
 PR_DEBUG("TICK\n");
 
-
-if (U!=0)
-	  {
-		
-		if(U>=U_MAX||U<=U_MIN)
-			{
-			rele_off_msg();
-			}
-		else if(I>=I_MAX)
-			{
-			rele_off_msg();
-			}		
-	  }
-
-
 uint16_t W_value,W_value1;
 bool flag;
-
-
-if (first_iterator) 
-{
-//PR_DEBUG("Defolt value send-nothing");
-first_iterator=false; 
-}
 
 ////////////////////////////////////////////////////////////////////
 uint16_t temp = read_adc_value();

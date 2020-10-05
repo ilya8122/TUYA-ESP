@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include "HEX_TO_DEC.h"
+#include "define.h"
 
 char *itoa(int number, char *destination, int base) {
   int count = 0;

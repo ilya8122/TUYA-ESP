@@ -9,10 +9,7 @@ Write your code in this editor and press "Run" button to compile and execute it.
 #include <stdio.h>
 #include <math.h>
 #include "RES_TO_TEMP.h"
-#define B 3950 // B-коэффициент
-#define SERIAL_R 370 // сопротивление последовательного резистора, 370 Ом
-#define THERMISTOR_R 10000 // номинальное сопротивления термистора, 10 кОм
-#define NOMINAL_T 25 // номинальная температура (при которой TR = 10 кОм)
+#include "define.h"
 
 int temperature[] =
 {

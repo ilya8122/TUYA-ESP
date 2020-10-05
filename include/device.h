@@ -8,7 +8,7 @@
 
     #include "sys_adapter.h"
     #include "error_code.h"
-    
+    #include "define.h"
 #ifdef __cplusplus
 	extern "C" {
 #endif
