@@ -2,7 +2,7 @@
 #include "tuya_smart_api.h"
 #include "wf_sdk_adpt.h"
 
-#include "adclib.h"
+//#include "adclib.h"
 #include "HEX_TO_DEC.h"
 #include "RES_TO_TEMP.h"
 

@@ -3,6 +3,10 @@
 *  Author: ILYA
 *  Date: 20150605
 ***********************************************************/
+//#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 #define __DEVICE_GLOBALS
 #include "device.h"
 #include "tuya_smart_api.h"
@@ -11,12 +15,9 @@
 #include "adclib.h"
 #include "HEX_TO_DEC.h"
 #include "RES_TO_TEMP.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "define.h"
 #include "UART.h"
+#include "tuya_msg.h"
 
 
 /***********************************************************
@@ -47,6 +48,7 @@ int REGULATOR;
 int ISTOCHNIK,LOW_LEVEL,HIGH_LEVEL,temp_min,temp_max;
 
 bool def_protechki, RELE_stat;
+adc_config_t adc_config;
 
 int U_MIN,U_MAX,I_MAX;
 float ENERGY;
@@ -88,85 +90,11 @@ VOID app_init(VOID)//system func
     app_cfg_set(WCM_LOW_POWER,prod_test);
 }
 
-STATIC VOID tuya_msg(UINT dpid,UINT num_int,UINT type,float num_float)//send msg to tuya func
-{
-   PR_DEBUG("tuya_msg");
-
-   GW_WIFI_STAT_E wf_stat = tuya_get_wf_status();
-    if((wf_stat < STAT_STA_CONN) || (tuya_get_gw_status() != STAT_WORK)){PR_DEBUG("return WM_FAIL");return;}
-    cJSON *root = cJSON_CreateObject();
-    if(NULL == root) {PR_DEBUG("return WM_FAIL");return;} 
-switch(dpid)
-{
-case 1:
-if (type=1){   cJSON_AddFalseToObject(root,"1");	}
-if (type=2){   cJSON_AddTrueToObject(root,"1");		}
-break;
-
-case 17:
-if (type=3)
-{  cJSON_AddNumberToObject(root,"17",num_int);}  //Energy
-break;
-
-case 18:
-if (type=3)
-{  cJSON_AddNumberToObject(root,"18",num_int);}  //I
-break;
-
-case 19:
-if (type=3)
-{ cJSON_AddNumberToObject(root,"19",num_int);}  //p
-break;
-
-case 20:
-if (type=3)
-{ cJSON_AddNumberToObject(root,"20",num_int);	}  //U
-break;
-
-case 103:
-if (type=3){   cJSON_AddNumberToObject(root,"103",num_int);	}  //w1
-break;
-
-case 104:
-if (type=3){   cJSON_AddNumberToObject(root,"104",num_int);	}  //w2
-break;
-
-case 106:
-if (type=3){
- //char buf[16];sprintf(buf,"%d",num_int);const char* p = buf; cJSON_AddStringToObject(root,"106",buf);
- cJSON_AddNumberToObject(root,"106",num_int);}  //ADC
-break;
-
-case 110:
-if (type=1){   cJSON_AddFalseToObject(root,"110");	}
-if (type=2){   cJSON_AddTrueToObject(root,"110");	}
-break;
-
-default:
-PR_DEBUG("NO DPID");
-break;
-}
-    CHAR *out = cJSON_PrintUnformatted(root);
-    cJSON_Delete(root);
-    if(NULL == out)
-    {
-        PR_ERR("cJSON_PrintUnformatted err:");
-        PR_DEBUG("return WM_FAIL");return;
-    }    
-    PR_DEBUG("out:  %s ", out);
-    OPERATE_RET op_ret = tuya_obj_dp_report(out);
-    Free(out);
-
-        if( OPRT_OK == op_ret ) 	{      PR_DEBUG("return suc");return;  	}
-	else	{        PR_DEBUG("return WM_FAIL");return;   	} 
-}
-
-
 STATIC VOID rele_on(){tuya_set_led_type(Rele,OL_HIGH,0);RELE_stat=true; PR_DEBUG("rele_on");}
 STATIC VOID rele_off(){tuya_set_led_type(Rele,OL_LOW,0);RELE_stat=false; PR_DEBUG("rele_off");}
 
-STATIC VOID rele_on_msg(){tuya_set_led_type(Rele,OL_HIGH,0);tuya_msg(1,0,2,0);RELE_stat=true; PR_DEBUG("rele_on_msg");}
-STATIC VOID rele_off_msg(){tuya_set_led_type(Rele,OL_LOW,0);tuya_msg(1,0,1,0);RELE_stat=false; PR_DEBUG("rele_off_msg");}
+STATIC VOID rele_on_msg(){tuya_set_led_type(Rele,OL_HIGH,0);tuya_msg(1,0,2);RELE_stat=true; PR_DEBUG("rele_on_msg");}
+STATIC VOID rele_off_msg(){tuya_set_led_type(Rele,OL_LOW,0);tuya_msg(1,0,1);RELE_stat=false; PR_DEBUG("rele_off_msg");}
 
 STATIC VOID reaction(UINT dpid,UINT dps,char *dps_char)//reaction on json msg func
 {
@@ -404,11 +332,10 @@ STATIC OPERATE_RET device_differ_init(VOID)////system init func (can change)
 print_port_init(UART1);
 user_uart_raw_full_init(BIT_RATE_4800, UART_WordLength_8b,USART_Parity_Even,USART_StopBits_1);
    
-adc_config_t adc_config;
+
 adc_config.mode = ADC_READ_TOUT_MODE;
 adc_config.clk_div = 8; 
 adc_init(&adc_config);
-
 
     return OPRT_OK;
 }
@@ -459,16 +386,20 @@ break;
 
 int read_adc_value()
 {
+
 uint16_t adc_data[100];
 adc_read(&adc_data[0]);
 PR_DEBUG("ADC:%d", adc_data[0]);
-int t = adc_data[0];
+int adc = adc_data[0];
 
-float tr = 1023.0 / t - 1;//cопротивление
-    tr = SERIAL_R / tr*240;//240- подбором в зависимости от текущей температуры
-PR_DEBUG("RESISTANCE:%d", tr);
+float U = 0.0009765625*(float)adc;//1/1024
+//printf("\nU %f",U);
+
+float r = (core_U*SERIAL_Resistor2-SERIAL_Resistor2*U)/(U);
+
+PR_DEBUG("RESISTANCE:%d", (int)r);
   
-int temp =get_temp(tr);
+int temp =get_temp(r);
 PR_DEBUG("temp:%d", temp);
 return temp ;
 }
@@ -500,18 +431,40 @@ if (U!=0)
 			}		
 	  }
 
-tuya_msg(17,(int)(ENERGY*1000),3,0);
-tuya_msg(18,(int)(I*1000),3,0);
-tuya_msg(19,(int)(P*10),3,0);
-tuya_msg(20,(int)(U*10),3,0);
+tuya_msg(17,(int)(ENERGY*1000),3);
+tuya_msg(18,(int)(I*1000),3);
+tuya_msg(19,(int)(P*10),3);
+tuya_msg(20,(int)(U*10),3);
 }
 }
 
+/*STATIC VOID check_protecki(bool def,bool istoch,bool w1,bool w2)
+{
+if (def==true)
+{
+switch(istoch)
+	{
+	case 0:
+if(!w1){rele_off_msg();}
+	break;
 
+	case 1:
+if(!w2){rele_off_msg();}
+	break;
 
+	case 2:
+if (!w1 || !w2){rele_off_msg();}
+	break;
 
+	case 3:
+if (!w1 && !w2){rele_off_msg();}
+	break;
 
-
+	default:
+PR_DEBUG("ISTOCHNIK-UNKOWN");
+	break;
+	}
+}*/
 
 
 
@@ -524,54 +477,23 @@ if( tuya_get_gw_status() == STAT_WORK&& tuya_get_wf_status()==STAT_STA_CONN)
 {  
 PR_DEBUG("TICK\n");
 
-uint16_t W_value,W_value1;
 bool flag;
 
 ////////////////////////////////////////////////////////////////////
 uint16_t temp = read_adc_value();
- tuya_msg(106,temp*10,3,0);
+ tuya_msg(106,temp*10,3);
 
-uint16_t i2 = tuya_read_gpio_level(W1_io12);
- tuya_msg(103,i2,3,0);
+bool w1 = tuya_read_gpio_level(W1_io12);
+ tuya_msg(103,(int)(!w1),3);
 
-uint16_t i3 = tuya_read_gpio_level(W2_io13);
- tuya_msg(104,i3,3,0);
+bool w2 = tuya_read_gpio_level(W2_io13);
+ tuya_msg(104,(int)(!w2),3);
 
 
 ///////////////////////////////////////////////////////////////////
 
+//check_protecki()
 
-if (def_protechki==true)
-{
-switch(ISTOCHNIK)
-	{
-	case 0:
-W_value = tuya_read_gpio_level(W1_io12);
-if(W_value==0){flag=true;}else {flag=false;}
-	break;
-
-	case 1:
-W_value = tuya_read_gpio_level(W2_io13);
-if(W_value==0){flag=true;}else {flag=false;}
-	break;
-
-	case 2:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0||W_value1==0){flag=true;}else {flag=false;}
-	break;
-
-	case 3:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0) {if (W_value1==0){flag=true;}}else {flag=false;}
-	break;
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-}
-if (flag==true){rele_off_msg();}
-}
 
 
 switch(REGULATOR)
@@ -612,30 +534,28 @@ case 5://5 HeaterW
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
 	switch(ISTOCHNIK)
 	{
 	case 0:
-W_value = tuya_read_gpio_level(W1_io12);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w1){rele_off_msg();}
 	break;
 
 	case 1:
-W_value = tuya_read_gpio_level(W2_io13);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w2){rele_off_msg();}
 	break;
 
 	case 2:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0||W_value1==0){flag=true;}else {flag=false;}
+if (!w1 || !w2){rele_off_msg();}
 	break;
 
 	case 3:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0&&W_value1==0){flag=true;}else {flag=false;}
+if (!w1 && !w2){rele_off_msg();}
+	break;
+
+	default:
+PR_DEBUG("ISTOCHNIK-UNKOWN");
 	break;
 	}
 
@@ -652,30 +572,25 @@ case 6://6 ConditionerW
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
 	switch(ISTOCHNIK)
 	{
 	case 0:
-W_value = tuya_read_gpio_level(W1_io12);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w1){rele_off_msg();}
 	break;
-
 	case 1:
-W_value = tuya_read_gpio_level(W2_io13);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w2){rele_off_msg();}
 	break;
-
 	case 2:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0||W_value1==0){flag=true;}else {flag=false;}
+if (!w1 || !w2){rele_off_msg();}
+	break;
+	case 3:
+if (!w1 && !w2){rele_off_msg();}
 	break;
 
-	case 3:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0&&W_value1==0){flag=true;}else {flag=false;}
+	default:
+PR_DEBUG("ISTOCHNIK-UNKOWN");
 	break;
 	}
 
@@ -694,30 +609,25 @@ case 7://7 InrangeW
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
-	switch(ISTOCHNIK)
+switch(ISTOCHNIK)
 	{
 	case 0:
-W_value = tuya_read_gpio_level(W1_io12);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w1){rele_off_msg();}
 	break;
-
 	case 1:
-W_value = tuya_read_gpio_level(W2_io13);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w2){rele_off_msg();}
 	break;
-
 	case 2:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0||W_value1==0){flag=true;}else {flag=false;}
+if (!w1 || !w2){rele_off_msg();}
+	break;
+	case 3:
+if (!w1 && !w2){rele_off_msg();}
 	break;
 
-	case 3:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0&&W_value1==0){flag=true;}else {flag=false;}
+	default:
+PR_DEBUG("ISTOCHNIK-UNKOWN");
 	break;
 	}
 
@@ -737,32 +647,28 @@ case 8://8 OutRangeW
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
 	switch(ISTOCHNIK)
 	{
 	case 0:
-W_value = tuya_read_gpio_level(W1_io12);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w1){rele_off_msg();}
 	break;
-
 	case 1:
-W_value = tuya_read_gpio_level(W2_io13);
-if(W_value==0){flag=true;}else {flag=false;}
+if(!w2){rele_off_msg();}
 	break;
-
 	case 2:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0||W_value1==0){flag=true;}else {flag=false;}
+if (!w1 || !w2){rele_off_msg();}
+	break;
+	case 3:
+if (!w1 && !w2){rele_off_msg();}
 	break;
 
-	case 3:
-W_value =tuya_read_gpio_level(W1_io12);
-W_value1=tuya_read_gpio_level(W2_io13);
-if (W_value==0&&W_value1==0){flag=true;}else {flag=false;}
+	default:
+PR_DEBUG("ISTOCHNIK-UNKOWN");
 	break;
 	}
+
 if (flag==true)
 {
 if(temp_min<=temp&&temp<=temp_max){rele_off_msg();}
@@ -779,32 +685,32 @@ case 9://9 Filling
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
 
 switch(LOW_LEVEL)
 {
 case 0:
-W_value =tuya_read_gpio_level(W1_io12);
+w1 =tuya_read_gpio_level(W1_io12);
 break;
 
 case 1:
-W_value =tuya_read_gpio_level(W2_io13);
+w2 =tuya_read_gpio_level(W2_io13);
 break;
 }
 switch(HIGH_LEVEL)
 {
 case 0:
-W_value1=tuya_read_gpio_level(W1_io12);
+w1=tuya_read_gpio_level(W1_io12);
 break;
 
 case 1:
-W_value1=tuya_read_gpio_level(W2_io13);
+w2=tuya_read_gpio_level(W2_io13);
 break;
 }
 
-if(W_value1==1&&W_value==0){rele_on_msg();} 
-else if(W_value1==0&&W_value==0){rele_off_msg();} 
+if(w1==1&&w2==0){rele_on_msg();} 
+else if(w1==0&&w2==0){rele_off_msg();} 
 else{}
 break;
 
@@ -815,30 +721,30 @@ case 10://10 Drain
 if (def_protechki==true)
 {
 def_protechki=false; 
-tuya_msg(110,0,1,0);
+tuya_msg(110,0,1);
 }
 switch(LOW_LEVEL)
 {
 case 0:
-W_value =tuya_read_gpio_level(W1_io12);
+w1 =tuya_read_gpio_level(W1_io12);
 break;
 
 case 1:
-W_value =tuya_read_gpio_level(W2_io13);
+w2 =tuya_read_gpio_level(W2_io13);
 break;
 }
 switch(HIGH_LEVEL)
 {
 case 0:
-W_value1=tuya_read_gpio_level(W1_io12);
+w1=tuya_read_gpio_level(W1_io12);
 break;
 
 case 1:
-W_value1=tuya_read_gpio_level(W2_io13);
+w2=tuya_read_gpio_level(W2_io13);
 break;
 }
-if(W_value1==0&&W_value==0){rele_on_msg();} 
-else if(W_value1==1 && W_value==0){rele_off_msg();} 
+if(w1==0&&w2==0){rele_on_msg();} 
+else if(w1==1 && w2==0){rele_off_msg();} 
 break;
 	default:
 PR_DEBUG("REGULATOR-UNKOWN");
@@ -848,13 +754,7 @@ else
 {/*PR_DEBUG("FALLLLLLLLLLLLL");*/}
 
 }
-/*
 
-
-int i4 = tuya_read_gpio_level(W3_io14);
-
- tuya_msg(105,i4,3);
-*/
 
 
 

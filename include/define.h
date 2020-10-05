@@ -1,6 +1,5 @@
-#define SERIAL_R 370 // сопротивление последовательного резистора, 370 Ом
-#define THERMISTOR_R 10000 // номинальное сопротивления термистора, 10 кОм
-#define NOMINAL_T 25 // номинальная температура (при которой TR = 10 кОм)
+#define SERIAL_Resistor2 370 // сопротивление последовательного резистора, 370 Ом
+#define core_U 3.3 
 
 #define WF_RESET_KEY GPIO_ID_PIN(0)
 #define WF_DIR_LED   GPIO_ID_PIN(5)
@@ -10,7 +9,7 @@
 #define W2_io13 GPIO_ID_PIN(13)
 
 //REGULATOR                  
-#define  Off 		0
+/*#define  Off 		0
 #define  Heater 	1
 #define  Conditioner 	2
 #define  Inrange 	3
@@ -26,4 +25,4 @@
 #define  w1		0
 #define  w2		1
 #define  w_or		2
-#define  w_and		3
+#define  w_and		3*/

@@ -21,7 +21,7 @@ int i,i1;
 uint16 a;
 uint8 buf[50]={0};
 uint8 current_buf[24]={0};
-int U;
+
 
 	U=0;I=0; P_calc=0;
 a=user_uart_read_data(buf,50);
@@ -49,7 +49,7 @@ for(i=0;i<50;i++)
 		//PR_DEBUG("U1 %d,%f",u1,u2);
 		//PR_DEBUG("U2 %d,%f",u2,u2);	
 		//  PR_DEBUG("U %d",U);
-		int U =u1/u2;
+		 U =u1/u2;
 
 		if(U!=0)
 			{ 
@@ -58,14 +58,14 @@ for(i=0;i<50;i++)
 			//PR_DEBUG("I1 %d,%f",I1,I1);
 			//PR_DEBUG("I2 %d,%f",I2,I2);       
 			//PR_DEBUG("I %d",I);
-			float I = (float)I1/(float)I2;  
+			 I = (float)I1/(float)I2;  
 
 			int P1 = get_value_3(current_buf[14],current_buf[15],current_buf[16]);
 			int P2 = get_value_3(current_buf[17],current_buf[18],current_buf[19]);
 			//PR_DEBUG("P1 %d,%f",P1,P1);
 			//PR_DEBUG("P2 %d,%f",P2,P2);       
 			//PR_DEBUG("P %d",P);
-			float P_calc= (float)U*I;
+			 P_calc= (float)U*I;
 			}
 		}  
 }

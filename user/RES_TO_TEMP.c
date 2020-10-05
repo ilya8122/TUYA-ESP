@@ -301,7 +301,7 @@ int get_temp(float num)
     float pogresh =current_val/100*2.5;
 int i;
 //     printf("\npogresh 2.5 %f",pogresh);
-    for (i=0;i<=134;i++)
+    for (i=0;i<sizeof(resistans);i++)
     {
         if ((resistans[i]==current_val) || (resistans[i]<=(current_val+pogresh)&&resistans[i]>=(current_val-pogresh))) //|| (resistans[i]<=(current_val+pogresh)) || (resistans[i]>=(current_val-pogresh)))
         {
