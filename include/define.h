@@ -8,6 +8,9 @@
 #define W1_io12 GPIO_ID_PIN(12)
 #define W2_io13 GPIO_ID_PIN(13)
 
+#define ENERGY_TIMER_PERIOD 250
+#define REGULATOR_TIMER_PERIOD 1000
+
 //REGULATOR                  
 /*#define  Off 		0
 #define  Heater 	1

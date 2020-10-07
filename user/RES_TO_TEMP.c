@@ -303,8 +303,7 @@ int i;
 //     printf("\npogresh 2.5 %f",pogresh);
     for (i=0;i<sizeof(resistans);i++)
     {
-        if ((resistans[i]==current_val) || (resistans[i]<=(current_val+pogresh)&&resistans[i]>=(current_val-pogresh))) //|| (resistans[i]<=(current_val+pogresh)) || (resistans[i]>=(current_val-pogresh)))
-        {
+        if ((resistans[i]-current_val<0.00001) || (resistans[i]<(current_val+pogresh)&&resistans[i]>(current_val-pogresh)))         {
 
             return temperature[i];
         }

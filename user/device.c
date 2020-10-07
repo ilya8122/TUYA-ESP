@@ -18,6 +18,7 @@
 #include "define.h"
 #include "UART.h"
 #include "tuya_msg.h"
+#include "regulator.h"
 
 
 /***********************************************************
@@ -47,7 +48,7 @@ STATIC VOID uart_timer_cb(UINT timerID,PVOID pTimerArg);//handler my timer
 int REGULATOR;
 int ISTOCHNIK,LOW_LEVEL,HIGH_LEVEL,temp_min,temp_max;
 
-bool def_protechki, RELE_stat;
+bool def_protechki;
 adc_config_t adc_config;
 
 int U_MIN,U_MAX,I_MAX;
@@ -90,11 +91,6 @@ VOID app_init(VOID)//system func
     app_cfg_set(WCM_LOW_POWER,prod_test);
 }
 
-STATIC VOID rele_on(){tuya_set_led_type(Rele,OL_HIGH,0);RELE_stat=true; PR_DEBUG("rele_on");}
-STATIC VOID rele_off(){tuya_set_led_type(Rele,OL_LOW,0);RELE_stat=false; PR_DEBUG("rele_off");}
-
-STATIC VOID rele_on_msg(){tuya_set_led_type(Rele,OL_HIGH,0);tuya_msg(1,0,2);RELE_stat=true; PR_DEBUG("rele_on_msg");}
-STATIC VOID rele_off_msg(){tuya_set_led_type(Rele,OL_LOW,0);tuya_msg(1,0,1);RELE_stat=false; PR_DEBUG("rele_off_msg");}
 
 STATIC VOID reaction(UINT dpid,UINT dps,char *dps_char)//reaction on json msg func
 {
@@ -102,8 +98,8 @@ switch(dpid)
 {
 case 1://rele dpid 
 
-if(dps==0) rele_off();
-if(dps==1) rele_on();
+if(dps==0) rele_off(Rele);
+if(dps==1) rele_on(Rele);
 break;
 
 case 101:
@@ -320,14 +316,14 @@ STATIC OPERATE_RET device_differ_init(VOID)////system init func (can change)
     if(OPRT_OK != op_ret) {
         return op_ret;
     }else {
-        sys_start_timer(uart_timer,300,TIMER_CYCLE);
+        sys_start_timer(uart_timer,ENERGY_TIMER_PERIOD,TIMER_CYCLE);
     }
 // create timer reg handle
     op_ret = sys_add_timer(heart_bit_timer_cb,NULL,&heart_bit_timer);
        if(OPRT_OK != op_ret) {
            return op_ret;
        }else {
-           sys_start_timer(heart_bit_timer,1000,TIMER_CYCLE);
+           sys_start_timer(heart_bit_timer,REGULATOR_TIMER_PERIOD,TIMER_CYCLE);
        }
 print_port_init(UART1);
 user_uart_raw_full_init(BIT_RATE_4800, UART_WordLength_8b,USART_Parity_Even,USART_StopBits_1);
@@ -413,21 +409,23 @@ STATIC VOID uart_timer_cb(UINT timerID,PVOID pTimerArg)// my timer handle
 if( tuya_get_gw_status() == STAT_WORK&& tuya_get_wf_status()==STAT_STA_CONN) 
 {  
 PR_DEBUG("UART TICK\n");
+
 read_uart();
 int U= get_U_value();
 float ENERGY=get_ENERGY_value();
 float I=get_I_value();
 float P=get_P_calc_value();
+
 if (U!=0)
 	  {
 		
 		if(U>=U_MAX||U<=U_MIN)
 			{
-			rele_off_msg();
+			rele_off_msg(Rele);
 			}
 		else if(I>=I_MAX)
 			{
-			rele_off_msg();
+			rele_off_msg(Rele);
 			}		
 	  }
 
@@ -438,48 +436,16 @@ tuya_msg(20,(int)(U*10),3);
 }
 }
 
-/*STATIC VOID check_protecki(bool def,bool istoch,bool w1,bool w2)
-{
-if (def==true)
-{
-switch(istoch)
-	{
-	case 0:
-if(!w1){rele_off_msg();}
-	break;
-
-	case 1:
-if(!w2){rele_off_msg();}
-	break;
-
-	case 2:
-if (!w1 || !w2){rele_off_msg();}
-	break;
-
-	case 3:
-if (!w1 && !w2){rele_off_msg();}
-	break;
-
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-	}
-}*/
 
 
 
 STATIC VOID heart_bit_timer_cb(UINT timerID,PVOID pTimerArg)// my timer handle
 {
 
-//if(RELE_stat){rele_on();}else if(!RELE_stat){rele_off();}
-
 if( tuya_get_gw_status() == STAT_WORK&& tuya_get_wf_status()==STAT_STA_CONN) 
 {  
 PR_DEBUG("TICK\n");
 
-bool flag;
-
-////////////////////////////////////////////////////////////////////
 uint16_t temp = read_adc_value();
  tuya_msg(106,temp*10,3);
 
@@ -489,272 +455,12 @@ bool w1 = tuya_read_gpio_level(W1_io12);
 bool w2 = tuya_read_gpio_level(W2_io13);
  tuya_msg(104,(int)(!w2),3);
 
-
-///////////////////////////////////////////////////////////////////
-
-//check_protecki()
-
-
-
-switch(REGULATOR)
-{
-case 0://off
- 
-break;
-
-case 1://heater
-temp = read_adc_value();
-if(temp>=temp_max){rele_off_msg();}
-else if (temp<temp_min){rele_on_msg();}
-break;
-
-
-case 2://conditioner
-temp = read_adc_value();
-if(temp<=temp_min){rele_off_msg();}
-else if (temp>=temp_max){rele_on_msg();}
-break;
-
-
-case 3://inrange
-if(temp_min<=temp&&temp<=temp_max){rele_on_msg();}
-else{rele_off_msg();}
-break;
-
-
-
-case 4:// OutRange
-if(temp_min<=temp&&temp<=temp_max){rele_off_msg();}
-else{rele_on_msg();} 
-break;
-
-
-
-case 5://5 HeaterW
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-	switch(ISTOCHNIK)
-	{
-	case 0:
-if(!w1){rele_off_msg();}
-	break;
-
-	case 1:
-if(!w2){rele_off_msg();}
-	break;
-
-	case 2:
-if (!w1 || !w2){rele_off_msg();}
-	break;
-
-	case 3:
-if (!w1 && !w2){rele_off_msg();}
-	break;
-
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-	}
-
-if (flag==true)
-{
- temp = read_adc_value();
- if(temp>=temp_max){rele_off_msg();}
-else if (temp<temp_min){rele_on_msg();}
-flag=false;
-}
-break;
-
-case 6://6 ConditionerW
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-	switch(ISTOCHNIK)
-	{
-	case 0:
-if(!w1){rele_off_msg();}
-	break;
-	case 1:
-if(!w2){rele_off_msg();}
-	break;
-	case 2:
-if (!w1 || !w2){rele_off_msg();}
-	break;
-	case 3:
-if (!w1 && !w2){rele_off_msg();}
-	break;
-
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-	}
-
-if (flag==true)
-{
- temp = read_adc_value();
- if(temp<=temp_min){rele_off_msg();}
-else if (temp>=temp_max){rele_on_msg();}
-flag=false;
-}
-break;
-
-
-
-case 7://7 InrangeW
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-switch(ISTOCHNIK)
-	{
-	case 0:
-if(!w1){rele_off_msg();}
-	break;
-	case 1:
-if(!w2){rele_off_msg();}
-	break;
-	case 2:
-if (!w1 || !w2){rele_off_msg();}
-	break;
-	case 3:
-if (!w1 && !w2){rele_off_msg();}
-	break;
-
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-	}
-
-if (flag==true)
-{
-if(temp_min<=temp&&temp<=temp_max){rele_on_msg();}
-else{rele_off_msg();}
-flag=false;
-}
-break;
-
-
-
-
-
-case 8://8 OutRangeW
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-	switch(ISTOCHNIK)
-	{
-	case 0:
-if(!w1){rele_off_msg();}
-	break;
-	case 1:
-if(!w2){rele_off_msg();}
-	break;
-	case 2:
-if (!w1 || !w2){rele_off_msg();}
-	break;
-	case 3:
-if (!w1 && !w2){rele_off_msg();}
-	break;
-
-	default:
-PR_DEBUG("ISTOCHNIK-UNKOWN");
-	break;
-	}
-
-if (flag==true)
-{
-if(temp_min<=temp&&temp<=temp_max){rele_off_msg();}
-else{rele_on_msg();} 
-flag=false;
-}
-break;
-
-
-
-
-
-case 9://9 Filling
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-
-switch(LOW_LEVEL)
-{
-case 0:
-w1 =tuya_read_gpio_level(W1_io12);
-break;
-
-case 1:
-w2 =tuya_read_gpio_level(W2_io13);
-break;
-}
-switch(HIGH_LEVEL)
-{
-case 0:
-w1=tuya_read_gpio_level(W1_io12);
-break;
-
-case 1:
-w2=tuya_read_gpio_level(W2_io13);
-break;
-}
-
-if(w1==1&&w2==0){rele_on_msg();} 
-else if(w1==0&&w2==0){rele_off_msg();} 
-else{}
-break;
-
-
-
-
-case 10://10 Drain
-if (def_protechki==true)
-{
-def_protechki=false; 
-tuya_msg(110,0,1);
-}
-switch(LOW_LEVEL)
-{
-case 0:
-w1 =tuya_read_gpio_level(W1_io12);
-break;
-
-case 1:
-w2 =tuya_read_gpio_level(W2_io13);
-break;
-}
-switch(HIGH_LEVEL)
-{
-case 0:
-w1=tuya_read_gpio_level(W1_io12);
-break;
-
-case 1:
-w2=tuya_read_gpio_level(W2_io13);
-break;
-}
-if(w1==0&&w2==0){rele_on_msg();} 
-else if(w1==1 && w2==0){rele_off_msg();} 
-break;
-	default:
-PR_DEBUG("REGULATOR-UNKOWN");
-	break;
-}}
-else 
-{/*PR_DEBUG("FALLLLLLLLLLLLL");*/}
+check_REGULATOR( REGULATOR, temp, temp_min, temp_max, def_protechki, ISTOCHNIK, (int)w1,(int) w2, LOW_LEVEL, HIGH_LEVEL,Rele);
 
 }
 
+
+}
 
 
 

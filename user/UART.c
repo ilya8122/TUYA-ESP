@@ -35,7 +35,7 @@ for(i=0;i<50;i++)
 {
 
 	int l = 50-i;
-	if (buf[i]==0x55 && l >=24 )
+	if (buf[i]==0x55 && l >=24 &&buf[i+1]==0x5a)
 		{
 		PR_DEBUG("Uart current_buf FOUNDED");
 		for(i1=0;i1<=23;i1++)
@@ -67,6 +67,8 @@ for(i=0;i<50;i++)
 			//PR_DEBUG("P %d",P);
 			 P_calc= (float)U*I;
 			}
+float p_buf=(P_calc/1000)/3600;
+ENERGY=ENERGY+p_buf;
 		}  
 }
 }	
