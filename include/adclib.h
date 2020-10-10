@@ -33,8 +33,8 @@ typedef enum {
  * @brief ADC initialization parameter structure type definition
  */
 typedef struct {
-    adc_mode_t mode;  /*!< ADC mode */
-    uint8_t clk_div;  /*!< ADC sample collection clock=80M/clk_div, range[8, 32] */
+    adc_mode_t mode; /*!< ADC mode */
+    uint8_t clk_div; /*!< ADC sample collection clock=80M/clk_div, range[8, 32] */
 } adc_config_t;
 typedef int32_t esp_err_t;
 /**
@@ -49,7 +49,7 @@ typedef int32_t esp_err_t;
   *     - ESP_ERR_INVALID_ARG Parameter error
   *     - ESP_FAIL adc has not been initialized yet
   */
-esp_err_t adc_read(uint16_t *data);
+esp_err_t adc_read(uint16_t* data);
 
 /**
   * @brief Measure the input voltage of TOUT(ADC) pin, unit : 1/1023 V.
@@ -64,7 +64,7 @@ esp_err_t adc_read(uint16_t *data);
   *     - ESP_ERR_INVALID_ARG Parameter error
   *     - ESP_FAIL adc has not been initialized yet
   */
-esp_err_t adc_read_fast(uint16_t *data, uint16_t len);
+esp_err_t adc_read_fast(uint16_t* data, uint16_t len);
 
 /**
   * @brief Deinit the adc
@@ -93,7 +93,7 @@ esp_err_t adc_read_fast(uint16_t *data, uint16_t len);
   *     - ESP_ERR_INVALID_ARG Parameter error
   *     - ESP_FAIL adc has been initialized
   */
-esp_err_t adc_init(adc_config_t *config);
+esp_err_t adc_init(adc_config_t* config);
 #ifdef __cplusplus
 }
 #endif
