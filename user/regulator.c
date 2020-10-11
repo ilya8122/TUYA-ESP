@@ -71,7 +71,7 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
     case 0:  // off
       break;
 
-    case 1:  // heater
+    case Heater:  // heater
       if (temp >= temp_max) {
         rele_off_msg(Rele);
       } else if (temp < temp_min) {
@@ -79,7 +79,7 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 2:  // conditioner
+    case Conditioner:  // conditioner
       if (temp <= temp_min) {
         rele_off_msg(Rele);
       } else if (temp >= temp_max) {
@@ -87,7 +87,7 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 3:  // inrange
+    case Inrange:  // inrange
       if (temp_min <= temp && temp <= temp_max) {
         rele_on_msg(Rele);
       } else {
@@ -95,7 +95,7 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 4:  // OutRange
+    case OutRange:  // OutRange
       if (temp_min <= temp && temp <= temp_max) {
         rele_off_msg(Rele);
       } else {
@@ -103,10 +103,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 5:  // 5 HeaterW
+    case HeaterW:  // 5 HeaterW
       if (def_protechki) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
       switch (ISTOCHNIK) {
         case 0:
@@ -145,10 +145,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 6:  // 6 ConditionerW
+    case ConditionerW:  // 6 ConditionerW
       if (def_protechki) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
       switch (ISTOCHNIK) {
         case 0:
@@ -184,10 +184,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 7:  // 7 InrangeW
+    case InrangeW:  // 7 InrangeW
       if (def_protechki) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
       switch (ISTOCHNIK) {
         case 0:
@@ -223,10 +223,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 8:  // 8 OutRangeW
+    case OutRangeW:  // 8 OutRangeW
       if (def_protechki) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
       switch (ISTOCHNIK) {
         case 0:
@@ -263,10 +263,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
 
       break;
 
-    case 9:  // 9 Filling
+    case Filling:  // 9 Filling
       if (def_protechki == true) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
 
       switch (LOW_LEVEL) {
@@ -296,10 +296,10 @@ void check_REGULATOR(int REGULATOR, int temp, int temp_min, int temp_max,
       }
       break;
 
-    case 10:  // 10 Drain
+    case Drain:  // 10 Drain
       if (def_protechki == true) {
         def_protechki = false;
-        tuya_msg(110, 0, 1);
+        tuya_msg(Water_def, 0, 1);
       }
       switch (LOW_LEVEL) {
         case 0:

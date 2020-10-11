@@ -67,7 +67,7 @@ bool def_protechki;
 
 adc_config_t adc_config;
 
-int U_MIN, U_MAX, I_MAX;
+int U_MIN=150;int U_MAX=220;int I_MAX=1;
 
 float ENERGY;
 
@@ -127,7 +127,7 @@ STATIC VOID reaction(UINT dpid, UINT dps,
   switch (dpid)
 
   {
-    case 1:  // rele dpid
+    case Switch:  // rele dpid
 
       if (dps == 0) rele_off(Rele);
 
@@ -135,67 +135,67 @@ STATIC VOID reaction(UINT dpid, UINT dps,
 
       break;
 
-    case 101:
+    case Regulator:
 
       if (strcmp(dps_char, "Off") == 0) {
-        REGULATOR = 0;
+        REGULATOR = Off;
       }
 
       if (strcmp(dps_char, "Heater") == 0) {
-        REGULATOR = 1;
+        REGULATOR = Heater;
       }
 
       if (strcmp(dps_char, "Conditioner") == 0) {
-        REGULATOR = 2;
+        REGULATOR = Conditioner;
       }
 
       if (strcmp(dps_char, "Inrange") == 0) {
-        REGULATOR = 3;
+        REGULATOR = Inrange;
       }
 
       if (strcmp(dps_char, "OutRange") == 0) {
-        REGULATOR = 4;
+        REGULATOR = OutRange;
       }
 
       if (strcmp(dps_char, "HeaterW") == 0) {
-        REGULATOR = 5;
+        REGULATOR = HeaterW;
       }
 
       if (strcmp(dps_char, "ConditionerW") == 0) {
-        REGULATOR = 6;
+        REGULATOR = ConditionerW;
       }
 
       if (strcmp(dps_char, "InrangeW") == 0) {
-        REGULATOR = 7;
+        REGULATOR = InrangeW;
       }
 
       if (strcmp(dps_char, "OutRangeW") == 0) {
-        REGULATOR = 8;
+        REGULATOR = OutRangeW;
       }
 
       if (strcmp(dps_char, "Filling") == 0) {
-        REGULATOR = 9;
+        REGULATOR = Filling;
       }
 
       if (strcmp(dps_char, "Drain") == 0) {
-        REGULATOR = 10;
+        REGULATOR = Drain;
       }
 
       break;
 
-    case 107:  // temperature min
+    case TLow:  // temperature min
 
       temp_min = dps;
 
       break;
 
-    case 108:  // temperature max
+    case THigh:  // temperature max
 
       temp_max = dps;
 
       break;
 
-    case 109:  // istochnik protechki choose
+    case Source_water:  // istochnik protechki choose
 
       if (strcmp(dps_char, "W1") == 0) {
         ISTOCHNIK = 0;
@@ -217,7 +217,7 @@ STATIC VOID reaction(UINT dpid, UINT dps,
 
       break;
 
-    case 110:  // defend protechki
+    case Water_def:  // defend protechki
 
       if (dps == 0)
         def_protechki = false;
@@ -227,7 +227,7 @@ STATIC VOID reaction(UINT dpid, UINT dps,
 
       break;
 
-    case 111:  // hi lvl protechki
+    case WHigh:  // hi lvl protechki
 
       if (strcmp(dps_char, "W1") == 0) {
         HIGH_LEVEL = 0;
@@ -241,7 +241,7 @@ STATIC VOID reaction(UINT dpid, UINT dps,
 
       break;
 
-    case 112:  // low lvl protechki
+    case WLow:  // low lvl protechki
 
       if (strcmp(dps_char, "W1") == 0) {
         LOW_LEVEL = 0;
@@ -255,21 +255,27 @@ STATIC VOID reaction(UINT dpid, UINT dps,
 
       break;
 
-    case 113:  // I_MAX
+    case Imax:  // I_MAX
 
       I_MAX = dps;
 
       break;
 
-    case 114:  // u_MAX
+    case Umax:  // u_MAX
 
       U_MAX = dps;
 
       break;
 
-    case 115:  // u_MIN
+    case UMin:  // u_MIN
 
       U_MIN = dps;
+
+      break;
+
+    case Reset_energy:  // 
+
+    energy_to_null();
 
       break;
 
@@ -628,18 +634,19 @@ STATIC VOID heart_bit_timer_cb(UINT timerID,
 
     uint16_t temp = read_adc_value();
 
-    tuya_msg(106, temp * 10, 3);
+    tuya_msg(Temperature, temp * 10, 3);
 
     bool w1 = tuya_read_gpio_level(W1_io12);
 
-    tuya_msg(103, (int)(!w1), 3);
+    tuya_msg(Water1, (int)(!w1), 3);
 
     bool w2 = tuya_read_gpio_level(W2_io13);
 
-    tuya_msg(104, (int)(!w2), 3);
+    tuya_msg(Water2, (int)(!w2), 3);
 
     check_REGULATOR(REGULATOR, temp, temp_min, temp_max, def_protechki,
                     ISTOCHNIK, (int)w1, (int)w2, LOW_LEVEL, HIGH_LEVEL, Rele);
+ PR_NOTICE("remain size:%d", system_get_free_heap_size());
   }
 }
 
