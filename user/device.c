@@ -578,11 +578,9 @@ STATIC VOID wfl_timer_cb(UINT timerID, PVOID pTimerArg)  // wf handle sys func
     last_wf_stat = wf_stat;
   }
 }
-
-int read_adc_value()
-
+int raw_read_adc_value()
 {
-  uint16_t adc_data[100];
+ uint16_t adc_data[100];
 
   adc_read(&adc_data[0]);
 
@@ -603,6 +601,18 @@ int read_adc_value()
   PR_DEBUG("temp:%d", temp);
 
   return temp;
+}
+
+
+
+int read_adc_value()
+{
+int i=0;
+int sum=0;
+int temp;
+for(i=0;i<=4;i++) {sum=sum+raw_read_adc_value();}
+temp=sum/5;
+return temp;
 }
 
 STATIC VOID uart_timer_cb(UINT timerID, PVOID pTimerArg)  // my timer handle

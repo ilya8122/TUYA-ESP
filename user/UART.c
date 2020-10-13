@@ -11,8 +11,7 @@
 #include <math.h>
 #include "define.h"
 
-float I, P, P_calc, ENERGY;
-int U;
+
 
 struct struct_type //основная структура
 {
@@ -43,8 +42,7 @@ void read_uart() {
         PR_DEBUG("Uart current_buf FOUNDED");
         for (i1 = 0; i1 <= 23; i1++) {//переписчываем из общего буфера корректный пакет
           current_buf[i1] = buf[i + i1];
-          //			PR_DEBUG("current_buf[%d]     %x
-          //%d",i1,current_buf[i1],current_buf[i1]);
+         
         }
 
         int u1 = get_value_3(current_buf[2], current_buf[3], current_buf[4]);//преобразуем 3 байта коффецента напряжения в 1 целочисленную переменную (а=1 и=7 г=4 результат=174)
@@ -54,7 +52,7 @@ void read_uart() {
         //  PR_DEBUG("U %d",U);
         Energy_struct.U = u1 / u2;
 
-        if (U != 0) {
+        if (Energy_struct.U != 0) {
           int I1 = get_value_3(current_buf[8], current_buf[9], current_buf[10]);//аналогично
           int I2 =
               get_value_3(current_buf[11], current_buf[12], current_buf[13]);//аналогично
@@ -70,10 +68,12 @@ void read_uart() {
           // PR_DEBUG("P1 %d,%f",P1,P1);
           // PR_DEBUG("P2 %d,%f",P2,P2);
           // PR_DEBUG("P %d",P);
-          Energy_struct.P_calc = (float)U * I;
+          Energy_struct.P_calc = (float) Energy_struct.U * Energy_struct.I;
+    float p_buf = Energy_struct.P_calc / 1000 / 3600 / (1000 / ENERGY_TIMER_PERIOD);//так как считываем 4 раза в секунду
+   Energy_struct.ENERGY = Energy_struct.ENERGY + p_buf;
         }
-        float p_buf = P_calc / 1000 / 3600 / 1000 / ENERGY_TIMER_PERIOD;//так как считываем 4 раза в секунду
-        Energy_struct.ENERGY = Energy_struct.ENERGY + p_buf;
+    
+     
         return;
       }
     }
@@ -81,7 +81,7 @@ void read_uart() {
 }
 
 void t_msg_energy() {//отправка в облако
-  tuya_msg(Energy, (int)(Energy_struct.ENERGY * 1000), 3);
+  tuya_msg(Energy, (int)(Energy_struct.ENERGY * 1000), 3);// 1000 for succes value
   tuya_msg(Current, (int)(Energy_struct.I * 1000), 3);
   tuya_msg(Power, (int)(Energy_struct.P_calc * 10), 3);
   tuya_msg(Voltage, (int)(Energy_struct.U * 10), 3);
