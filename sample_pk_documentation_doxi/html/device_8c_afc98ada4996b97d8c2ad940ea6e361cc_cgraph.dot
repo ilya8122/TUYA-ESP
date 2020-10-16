@@ -1,0 +1,14 @@
+digraph "uart_timer_cb"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="uart_timer_cb",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="def_I_U",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#afb0c13e6f4e359f6b8e323143336b89f",tooltip="resets the energy count"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="read_uart",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#ae0d511706a0af4a5f92424ce7df11546",tooltip="reads energy meter readings via UART and converts them to current, voltage, and power values"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="t_msg_energy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#a971d34e56642f4205ca517699b122f2e",tooltip="sends power, current, voltage, and amount of energy to the cloud"];
+}

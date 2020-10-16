@@ -1,0 +1,50 @@
+digraph "device_init"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="device_init",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="device_cb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#a60082df9155e4151a9fd97148d281d2c",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="reaction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#af74410df7bafa98ffd560a734caaa73a",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="energy_to_null",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#a54c6651a5399ac3d6975ab0a84e1e26a",tooltip="resets the energy count"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="rele_off",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$regulator_8h.html#aabf59107cce06edc3df9c5c5d4c1a2a4",tooltip="relay shutdown"];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="rele_on",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$regulator_8h.html#af6016fb9eaca0c6135b9b8ed217eb816",tooltip="enabling the relay"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="device_differ_init",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#a75875fe7a216fe6f8c9b710d135f2fd9",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="adc_init",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$adclib_8h.html#ab9bf25044d005e5c48f44549fe1f965a",tooltip="Deinit the adc."];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="heart_bit_timer_cb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#aa6212240c25ce6a1f019122c7e2c69fe",tooltip=" "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="check_REGULATOR",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$regulator_8h.html#a10407e8e45ce721321e9ea583ba12553",tooltip="This method hides the operation of all controller modes."];
+  Node9 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="read_adc_value",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#ab6d19f0c6cf8befff2935f3434cc810a",tooltip=" "];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="raw_read_adc_value",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#af39d1ebd65f0adc820bd6ded9aae5a98",tooltip=" "];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="adc_read",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$adclib_8h.html#a9d247ddf98fabe06d8bd84ea9c5ef95c",tooltip="Single measurement of TOUT(ADC) pin, unit : 1/1023 V or VDD pin, uint: 1 mV."];
+  Node12 -> Node14 [color="midnightblue",fontsize="10",style="solid"];
+  Node14 [label="get_temp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_r_e_s___t_o___t_e_m_p_8h.html#a028715755aa9a5a92db1d2014749bf71",tooltip="converts the resistance value to temperature according to the Chinese table"];
+  Node9 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node15 [label="tuya_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tuya__msg_8h.html#aa809081407d33a9e995cb133be8a8508",tooltip="sends a message to the cloud"];
+  Node7 -> Node16 [color="midnightblue",fontsize="10",style="solid"];
+  Node16 [label="key_process",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#abc0a168fc5d3d0f96e2cd8567c4ab7a6",tooltip="system func"];
+  Node7 -> Node17 [color="midnightblue",fontsize="10",style="solid"];
+  Node17 [label="uart_timer_cb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#afc98ada4996b97d8c2ad940ea6e361cc",tooltip=" "];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid"];
+  Node18 [label="def_I_U",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#afb0c13e6f4e359f6b8e323143336b89f",tooltip="resets the energy count"];
+  Node17 -> Node19 [color="midnightblue",fontsize="10",style="solid"];
+  Node19 [label="read_uart",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#ae0d511706a0af4a5f92424ce7df11546",tooltip="reads energy meter readings via UART and converts them to current, voltage, and power values"];
+  Node17 -> Node20 [color="midnightblue",fontsize="10",style="solid"];
+  Node20 [label="t_msg_energy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_u_a_r_t_8h.html#a971d34e56642f4205ca517699b122f2e",tooltip="sends power, current, voltage, and amount of energy to the cloud"];
+  Node7 -> Node21 [color="midnightblue",fontsize="10",style="solid"];
+  Node21 [label="wfl_timer_cb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#ac06077003b3f22f5ce97afcd5ee48d73",tooltip=" "];
+  Node1 -> Node22 [color="midnightblue",fontsize="10",style="solid"];
+  Node22 [label="dp_qeury_cb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$device_8c.html#a88c4525075a07addbbeff1394612384f",tooltip=" "];
+}

@@ -1,0 +1,110 @@
+\hypertarget{_h_e_x___t_o___d_e_c_8h}{}\doxysection{H\+E\+X\+\_\+\+T\+O\+\_\+\+D\+E\+C.\+h File Reference}
+\label{_h_e_x___t_o___d_e_c_8h}\index{HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}define.\+h\char`\"{}}\newline
+Include dependency graph for H\+E\+X\+\_\+\+T\+O\+\_\+\+D\+E\+C.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_h_e_x___t_o___d_e_c_8h_acbb180adaadd73dfecddb2df8cd59d3a}{get\+\_\+value\+\_\+3}} (int arg1, int arg2, int arg3)
+\begin{DoxyCompactList}\small\item\em combines 3 int variables into 1 example\+: arg1 = 0x5a, int arg2 = 0x6b, int A\+RG = 0x3 result=0x5a6b3 \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_h_e_x___t_o___d_e_c_8h_a653ba19412bcd6c44abbafc9d9ef1cc1}{get\+\_\+value\+\_\+2}} (int arg1, int arg2)
+\begin{DoxyCompactList}\small\item\em combines 2 int variables into 1 example\+: arg1 = 0x5a, int arg2 = 0x6b result=0x5a6b \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{_h_e_x___t_o___d_e_c_8h_ab3681c1dfd26af06cb5bb1cc5eabe7a3}{itoa}} (int number, char $\ast$destination, int base)
+\begin{DoxyCompactList}\small\item\em converts an int to a string the itoa Function converts an integer value to a string in radix notation \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_h_e_x___t_o___d_e_c_8h_a2478796c1745f100df0d37f384662863}{pow}} (double number, double pow)
+\begin{DoxyCompactList}\small\item\em exponentiation \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_h_e_x___t_o___d_e_c_8h_a653ba19412bcd6c44abbafc9d9ef1cc1}\label{_h_e_x___t_o___d_e_c_8h_a653ba19412bcd6c44abbafc9d9ef1cc1}} 
+\index{HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}!get\_value\_2@{get\_value\_2}}
+\index{get\_value\_2@{get\_value\_2}!HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}}
+\doxysubsubsection{\texorpdfstring{get\_value\_2()}{get\_value\_2()}}
+{\footnotesize\ttfamily int get\+\_\+value\+\_\+2 (\begin{DoxyParamCaption}\item[{int}]{arg1,  }\item[{int}]{arg2 }\end{DoxyParamCaption})}
+
+
+
+combines 2 int variables into 1 example\+: arg1 = 0x5a, int arg2 = 0x6b result=0x5a6b 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg1} & parameter 1 \\
+\hline
+{\em arg2} & parameter 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result of merging 2 variables 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_h_e_x___t_o___d_e_c_8h_acbb180adaadd73dfecddb2df8cd59d3a}\label{_h_e_x___t_o___d_e_c_8h_acbb180adaadd73dfecddb2df8cd59d3a}} 
+\index{HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}!get\_value\_3@{get\_value\_3}}
+\index{get\_value\_3@{get\_value\_3}!HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}}
+\doxysubsubsection{\texorpdfstring{get\_value\_3()}{get\_value\_3()}}
+{\footnotesize\ttfamily int get\+\_\+value\+\_\+3 (\begin{DoxyParamCaption}\item[{int}]{arg1,  }\item[{int}]{arg2,  }\item[{int}]{arg3 }\end{DoxyParamCaption})}
+
+
+
+combines 3 int variables into 1 example\+: arg1 = 0x5a, int arg2 = 0x6b, int A\+RG = 0x3 result=0x5a6b3 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg1} & parameter 1 \\
+\hline
+{\em arg2} & parameter 2 \\
+\hline
+{\em arg3} & parameter 3 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result of merging 3 variables 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_h_e_x___t_o___d_e_c_8h_ab3681c1dfd26af06cb5bb1cc5eabe7a3}\label{_h_e_x___t_o___d_e_c_8h_ab3681c1dfd26af06cb5bb1cc5eabe7a3}} 
+\index{HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}!itoa@{itoa}}
+\index{itoa@{itoa}!HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}}
+\doxysubsubsection{\texorpdfstring{itoa()}{itoa()}}
+{\footnotesize\ttfamily char$\ast$ itoa (\begin{DoxyParamCaption}\item[{int}]{number,  }\item[{char $\ast$}]{destination,  }\item[{int}]{base }\end{DoxyParamCaption})}
+
+
+
+converts an int to a string the itoa Function converts an integer value to a string in radix notation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & the number to be converted \\
+\hline
+{\em base} & the base of the number degree \\
+\hline
+{\em destination} & the string to which the number is converted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the itoa Function always returns a pointer to string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_h_e_x___t_o___d_e_c_8h_a2478796c1745f100df0d37f384662863}\label{_h_e_x___t_o___d_e_c_8h_a2478796c1745f100df0d37f384662863}} 
+\index{HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}!pow@{pow}}
+\index{pow@{pow}!HEX\_TO\_DEC.h@{HEX\_TO\_DEC.h}}
+\doxysubsubsection{\texorpdfstring{pow()}{pow()}}
+{\footnotesize\ttfamily double pow (\begin{DoxyParamCaption}\item[{double}]{number,  }\item[{double}]{pow }\end{DoxyParamCaption})}
+
+
+
+exponentiation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & number \\
+\hline
+{\em pow} & power value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+calculation result 
+\end{DoxyReturn}

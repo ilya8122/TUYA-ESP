@@ -1,0 +1,12 @@
+digraph "raw_read_adc_value"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="raw_read_adc_value",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="adc_read",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$adclib_8h.html#a9d247ddf98fabe06d8bd84ea9c5ef95c",tooltip="Single measurement of TOUT(ADC) pin, unit : 1/1023 V or VDD pin, uint: 1 mV."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="get_temp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_r_e_s___t_o___t_e_m_p_8h.html#a028715755aa9a5a92db1d2014749bf71",tooltip="converts the resistance value to temperature according to the Chinese table"];
+}

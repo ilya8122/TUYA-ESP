@@ -1,0 +1,152 @@
+\hypertarget{regulator_8h}{}\doxysection{regulator.\+h File Reference}
+\label{regulator_8h}\index{regulator.h@{regulator.h}}
+{\ttfamily \#include \char`\"{}tuya\+\_\+smart\+\_\+api.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tuya\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Include dependency graph for regulator.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{regulator_8h_af6016fb9eaca0c6135b9b8ed217eb816}{rele\+\_\+on}} (L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em enabling the relay \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{regulator_8h_aabf59107cce06edc3df9c5c5d4c1a2a4}{rele\+\_\+off}} (L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em relay shutdown \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{regulator_8h_a7577c652c9cb2b26df5b748d0932890b}{rele\+\_\+on\+\_\+msg}} (L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em enabling the relay and sending information about it to the cloud \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{regulator_8h_a588448b5109f47d7330879236bba0d50}{rele\+\_\+off\+\_\+msg}} (L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em turning off the relay and sending information about it to the cloud \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{regulator_8h_ab4c64ad2294d3d25e5f29bf8b417a46d}{check\+\_\+protecki}} (bool \mbox{\hyperlink{device_8c_a8f8e2af9358a9413f23cb81f749cde62}{def\+\_\+protechki}}, int \mbox{\hyperlink{device_8c_a45284e914c3e7558b7952f6220541908}{I\+S\+T\+O\+C\+H\+N\+IK}}, bool w1, bool w2)
+\begin{DoxyCompactList}\small\item\em checking for a leak in the rear source and turning off the relay if necessary \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{regulator_8h_a10407e8e45ce721321e9ea583ba12553}{check\+\_\+\+R\+E\+G\+U\+L\+A\+T\+OR}} (int \mbox{\hyperlink{device_8c_a32c04f85e4df101174b67d023dd2841b}{R\+E\+G\+U\+L\+A\+T\+OR}}, int temp, int \mbox{\hyperlink{device_8c_a135471b09f16698f71acf8b181d6ad28}{temp\+\_\+min}}, int \mbox{\hyperlink{device_8c_a6342455e1b4d9c1d174067c66f807e8a}{temp\+\_\+max}}, bool \mbox{\hyperlink{device_8c_a8f8e2af9358a9413f23cb81f749cde62}{def\+\_\+protechki}}, int \mbox{\hyperlink{device_8c_a45284e914c3e7558b7952f6220541908}{I\+S\+T\+O\+C\+H\+N\+IK}}, int w1, int w2, int \mbox{\hyperlink{device_8c_a62e59172f85171cbbe13bae5b5bb4be8}{L\+O\+W\+\_\+\+L\+E\+V\+EL}}, int \mbox{\hyperlink{device_8c_ac27c75671b46788a91fd59d1522f83fc}{H\+I\+G\+H\+\_\+\+L\+E\+V\+EL}}, L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em This method hides the operation of all controller modes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{regulator_8h_ab4c64ad2294d3d25e5f29bf8b417a46d}\label{regulator_8h_ab4c64ad2294d3d25e5f29bf8b417a46d}} 
+\index{regulator.h@{regulator.h}!check\_protecki@{check\_protecki}}
+\index{check\_protecki@{check\_protecki}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{check\_protecki()}{check\_protecki()}}
+{\footnotesize\ttfamily void check\+\_\+protecki (\begin{DoxyParamCaption}\item[{bool}]{def\+\_\+protechki,  }\item[{int}]{I\+S\+T\+O\+C\+H\+N\+IK,  }\item[{bool}]{w1,  }\item[{bool}]{w2 }\end{DoxyParamCaption})}
+
+
+
+checking for a leak in the rear source and turning off the relay if necessary 
+
+
+\begin{DoxyParams}{Parameters}
+{\em def\+\_\+protechki} & leak protection status \\
+\hline
+{\em I\+S\+T\+O\+C\+H\+N\+IK} & source of the leak \\
+\hline
+{\em w1} & the leak sensor 1 \\
+\hline
+{\em w2} & the leak sensor 2 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{regulator_8h_a10407e8e45ce721321e9ea583ba12553}\label{regulator_8h_a10407e8e45ce721321e9ea583ba12553}} 
+\index{regulator.h@{regulator.h}!check\_REGULATOR@{check\_REGULATOR}}
+\index{check\_REGULATOR@{check\_REGULATOR}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{check\_REGULATOR()}{check\_REGULATOR()}}
+{\footnotesize\ttfamily void check\+\_\+\+R\+E\+G\+U\+L\+A\+T\+OR (\begin{DoxyParamCaption}\item[{int}]{R\+E\+G\+U\+L\+A\+T\+OR,  }\item[{int}]{temp,  }\item[{int}]{temp\+\_\+min,  }\item[{int}]{temp\+\_\+max,  }\item[{bool}]{def\+\_\+protechki,  }\item[{int}]{I\+S\+T\+O\+C\+H\+N\+IK,  }\item[{int}]{w1,  }\item[{int}]{w2,  }\item[{int}]{L\+O\+W\+\_\+\+L\+E\+V\+EL,  }\item[{int}]{H\+I\+G\+H\+\_\+\+L\+E\+V\+EL,  }\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+This method hides the operation of all controller modes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em R\+E\+G\+U\+L\+A\+T\+OR} & number of the regulator \\
+\hline
+{\em temp} & the current temperature \\
+\hline
+{\em temp\+\_\+min} & temperature \\
+\hline
+{\em temp\+\_\+max} & max temperature \\
+\hline
+{\em def\+\_\+protechki} & protection status on the leak \\
+\hline
+{\em I\+S\+T\+O\+C\+H\+N\+IK} & source of the leak \\
+\hline
+{\em w1} & the leak sensor 1 \\
+\hline
+{\em w2} & the leak sensor 2 \\
+\hline
+{\em L\+O\+W\+\_\+\+L\+E\+V\+EL} & lower level of leakage \\
+\hline
+{\em H\+I\+G\+H\+\_\+\+L\+E\+V\+EL} & upper leak L\+E\+V\+EL \\
+\hline
+{\em Rele} & relay handler \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{regulator_8h_aabf59107cce06edc3df9c5c5d4c1a2a4}\label{regulator_8h_aabf59107cce06edc3df9c5c5d4c1a2a4}} 
+\index{regulator.h@{regulator.h}!rele\_off@{rele\_off}}
+\index{rele\_off@{rele\_off}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{rele\_off()}{rele\_off()}}
+{\footnotesize\ttfamily void rele\+\_\+off (\begin{DoxyParamCaption}\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+relay shutdown 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Rele} & relay handler \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{regulator_8h_a588448b5109f47d7330879236bba0d50}\label{regulator_8h_a588448b5109f47d7330879236bba0d50}} 
+\index{regulator.h@{regulator.h}!rele\_off\_msg@{rele\_off\_msg}}
+\index{rele\_off\_msg@{rele\_off\_msg}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{rele\_off\_msg()}{rele\_off\_msg()}}
+{\footnotesize\ttfamily void rele\+\_\+off\+\_\+msg (\begin{DoxyParamCaption}\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+turning off the relay and sending information about it to the cloud 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Rele} & relay handler \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{regulator_8h_af6016fb9eaca0c6135b9b8ed217eb816}\label{regulator_8h_af6016fb9eaca0c6135b9b8ed217eb816}} 
+\index{regulator.h@{regulator.h}!rele\_on@{rele\_on}}
+\index{rele\_on@{rele\_on}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{rele\_on()}{rele\_on()}}
+{\footnotesize\ttfamily void rele\+\_\+on (\begin{DoxyParamCaption}\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+enabling the relay 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Rele} & relay handler \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{regulator_8h_a7577c652c9cb2b26df5b748d0932890b}\label{regulator_8h_a7577c652c9cb2b26df5b748d0932890b}} 
+\index{regulator.h@{regulator.h}!rele\_on\_msg@{rele\_on\_msg}}
+\index{rele\_on\_msg@{rele\_on\_msg}!regulator.h@{regulator.h}}
+\doxysubsubsection{\texorpdfstring{rele\_on\_msg()}{rele\_on\_msg()}}
+{\footnotesize\ttfamily void rele\+\_\+on\+\_\+msg (\begin{DoxyParamCaption}\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+enabling the relay and sending information about it to the cloud 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Rele} & relay handler \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,87 @@
+\hypertarget{_u_a_r_t_8h}{}\doxysection{U\+A\+R\+T.\+h File Reference}
+\label{_u_a_r_t_8h}\index{UART.h@{UART.h}}
+{\ttfamily \#include \char`\"{}device.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tuya\+\_\+smart\+\_\+api.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}wf\+\_\+sdk\+\_\+adpt.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+E\+X\+\_\+\+T\+O\+\_\+\+D\+E\+C.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}define.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Include dependency graph for U\+A\+R\+T.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_u_a_r_t_8h_ae0d511706a0af4a5f92424ce7df11546}{read\+\_\+uart}} ()
+\begin{DoxyCompactList}\small\item\em reads energy meter readings via U\+A\+RT and converts them to current, voltage, and power values \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_u_a_r_t_8h_a971d34e56642f4205ca517699b122f2e}{t\+\_\+msg\+\_\+energy}} ()
+\begin{DoxyCompactList}\small\item\em sends power, current, voltage, and amount of energy to the cloud \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_u_a_r_t_8h_a54c6651a5399ac3d6975ab0a84e1e26a}{energy\+\_\+to\+\_\+null}} ()
+\begin{DoxyCompactList}\small\item\em resets the energy count \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_u_a_r_t_8h_afb0c13e6f4e359f6b8e323143336b89f}{def\+\_\+\+I\+\_\+U}} (int \mbox{\hyperlink{device_8c_a633454f54a1d7f2439a65666d71f9271}{U\+\_\+\+M\+AX}}, int \mbox{\hyperlink{device_8c_af5058dd0383c386b5025f718967b5c92}{U\+\_\+\+M\+IN}}, int \mbox{\hyperlink{device_8c_a9aad3d974541fa952452f31a9e0933b6}{I\+\_\+\+M\+AX}}, L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}})
+\begin{DoxyCompactList}\small\item\em resets the energy count \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_u_a_r_t_8h_afb0c13e6f4e359f6b8e323143336b89f}\label{_u_a_r_t_8h_afb0c13e6f4e359f6b8e323143336b89f}} 
+\index{UART.h@{UART.h}!def\_I\_U@{def\_I\_U}}
+\index{def\_I\_U@{def\_I\_U}!UART.h@{UART.h}}
+\doxysubsubsection{\texorpdfstring{def\_I\_U()}{def\_I\_U()}}
+{\footnotesize\ttfamily void def\+\_\+\+I\+\_\+U (\begin{DoxyParamCaption}\item[{int}]{U\+\_\+\+M\+AX,  }\item[{int}]{U\+\_\+\+M\+IN,  }\item[{int}]{I\+\_\+\+M\+AX,  }\item[{L\+E\+D\+\_\+\+H\+A\+N\+D\+LE}]{Rele }\end{DoxyParamCaption})}
+
+
+
+resets the energy count 
+
+
+\begin{DoxyParams}{Parameters}
+{\em U\+\_\+\+M\+AX} & maximum voltage value \\
+\hline
+{\em U\+\_\+\+M\+IN} & minimum voltage value \\
+\hline
+{\em I\+\_\+\+M\+AX} & maximum current value \\
+\hline
+{\em Rele} & handler \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{_u_a_r_t_8h_a54c6651a5399ac3d6975ab0a84e1e26a}\label{_u_a_r_t_8h_a54c6651a5399ac3d6975ab0a84e1e26a}} 
+\index{UART.h@{UART.h}!energy\_to\_null@{energy\_to\_null}}
+\index{energy\_to\_null@{energy\_to\_null}!UART.h@{UART.h}}
+\doxysubsubsection{\texorpdfstring{energy\_to\_null()}{energy\_to\_null()}}
+{\footnotesize\ttfamily void energy\+\_\+to\+\_\+null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+resets the energy count 
+
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{_u_a_r_t_8h_ae0d511706a0af4a5f92424ce7df11546}\label{_u_a_r_t_8h_ae0d511706a0af4a5f92424ce7df11546}} 
+\index{UART.h@{UART.h}!read\_uart@{read\_uart}}
+\index{read\_uart@{read\_uart}!UART.h@{UART.h}}
+\doxysubsubsection{\texorpdfstring{read\_uart()}{read\_uart()}}
+{\footnotesize\ttfamily void read\+\_\+uart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+reads energy meter readings via U\+A\+RT and converts them to current, voltage, and power values 
+
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{_u_a_r_t_8h_a971d34e56642f4205ca517699b122f2e}\label{_u_a_r_t_8h_a971d34e56642f4205ca517699b122f2e}} 
+\index{UART.h@{UART.h}!t\_msg\_energy@{t\_msg\_energy}}
+\index{t\_msg\_energy@{t\_msg\_energy}!UART.h@{UART.h}}
+\doxysubsubsection{\texorpdfstring{t\_msg\_energy()}{t\_msg\_energy()}}
+{\footnotesize\ttfamily void t\+\_\+msg\+\_\+energy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+sends power, current, voltage, and amount of energy to the cloud 
+
+Here is the caller graph for this function\+:
+% FIG 5

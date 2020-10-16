@@ -1,0 +1,351 @@
+\hypertarget{device_8c}{}\doxysection{device.\+c File Reference}
+\label{device_8c}\index{device.c@{device.c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}device.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tuya\+\_\+smart\+\_\+api.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}wf\+\_\+sdk\+\_\+adpt.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}adclib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+E\+X\+\_\+\+T\+O\+\_\+\+D\+E\+C.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}R\+E\+S\+\_\+\+T\+O\+\_\+\+T\+E\+M\+P.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}U\+A\+R\+T.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tuya\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}regulator.\+h\char`\"{}}\newline
+Include dependency graph for device.\+c\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{device_8c_ad1770c423566970050f4fd8dab511d5b}{\+\_\+\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+G\+L\+O\+B\+A\+LS}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+S\+T\+A\+T\+IC O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET \mbox{\hyperlink{device_8c_a75875fe7a216fe6f8c9b710d135f2fd9}{device\+\_\+differ\+\_\+init}} (V\+O\+ID)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_abc0a168fc5d3d0f96e2cd8567c4ab7a6}{key\+\_\+process}} (I\+NT gpio\+\_\+no, P\+U\+S\+H\+\_\+\+K\+E\+Y\+\_\+\+T\+Y\+P\+E\+\_\+E type, I\+NT cnt)
+\begin{DoxyCompactList}\small\item\em system func \end{DoxyCompactList}\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_ac06077003b3f22f5ce97afcd5ee48d73}{wfl\+\_\+timer\+\_\+cb}} (U\+I\+NT timer\+ID, P\+V\+O\+ID p\+Timer\+Arg)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_aa6212240c25ce6a1f019122c7e2c69fe}{heart\+\_\+bit\+\_\+timer\+\_\+cb}} (U\+I\+NT timer\+ID, P\+V\+O\+ID p\+Timer\+Arg)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_afc98ada4996b97d8c2ad940ea6e361cc}{uart\+\_\+timer\+\_\+cb}} (U\+I\+NT timer\+ID, P\+V\+O\+ID p\+Timer\+Arg)
+\item 
+V\+O\+ID \mbox{\hyperlink{device_8c_a437ad92decca14e2bf272521111cf9fa}{set\+\_\+firmware\+\_\+tp}} (IN O\+UT C\+H\+AR $\ast$firm\+\_\+name, IN O\+UT C\+H\+AR $\ast$firm\+\_\+ver)
+\item 
+B\+O\+OL \mbox{\hyperlink{device_8c_a27d1f2bb1f99c299d67d775af6823de0}{gpio\+\_\+func\+\_\+test}} (V\+O\+ID)
+\item 
+V\+O\+ID \mbox{\hyperlink{device_8c_a99cc18fde856e86f9b63df1a5b167d21}{pre\+\_\+app\+\_\+init}} (V\+O\+ID)
+\item 
+V\+O\+ID \mbox{\hyperlink{device_8c_a6e0ff9a026e9f4d42ddd6aa1aca548ca}{prod\+\_\+test}} (B\+O\+OL flag, C\+H\+AR rssi)
+\item 
+V\+O\+ID \mbox{\hyperlink{device_8c_ae6f94500221bbbd2ee8647c6aadda397}{app\+\_\+init}} (V\+O\+ID)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_af74410df7bafa98ffd560a734caaa73a}{reaction}} (U\+I\+NT dpid, U\+I\+NT dps, char $\ast$dps\+\_\+char)
+\item 
+V\+O\+ID \mbox{\hyperlink{device_8c_a60082df9155e4151a9fd97148d281d2c}{device\+\_\+cb}} (S\+M\+A\+R\+T\+\_\+\+C\+M\+D\+\_\+E cmd, c\+J\+S\+ON $\ast$root)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_a88c4525075a07addbbeff1394612384f}{dp\+\_\+qeury\+\_\+cb}} (IN C\+O\+N\+ST T\+Y\+\_\+\+D\+P\+\_\+\+Q\+U\+E\+R\+Y\+\_\+S $\ast$dp\+\_\+qry)
+\item 
+O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET \mbox{\hyperlink{device_8c_a34ddeee4cc5bae7c1403af00c5233aab}{device\+\_\+init}} (V\+O\+ID)
+\item 
+S\+T\+A\+T\+IC V\+O\+ID \mbox{\hyperlink{device_8c_a2e1fd2d2d5bd6e3be79fa36c32a01b00}{wifi\+\_\+rssi\+\_\+scan}} (O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET $\ast$ret, C\+H\+AR $\ast$rssi)
+\item 
+int \mbox{\hyperlink{device_8c_af39d1ebd65f0adc820bd6ded9aae5a98}{raw\+\_\+read\+\_\+adc\+\_\+value}} ()
+\item 
+int \mbox{\hyperlink{device_8c_ab6d19f0c6cf8befff2935f3434cc810a}{read\+\_\+adc\+\_\+value}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+T\+I\+M\+E\+R\+\_\+\+ID \mbox{\hyperlink{device_8c_a70b0131f7fd3ea86b9398bdc45bcd9c5}{heart\+\_\+bit\+\_\+timer}}
+\item 
+T\+I\+M\+E\+R\+\_\+\+ID \mbox{\hyperlink{device_8c_a90d1885b2334cfaf4c8fb691764d32da}{sys\+\_\+timer}}
+\item 
+T\+I\+M\+E\+R\+\_\+\+ID \mbox{\hyperlink{device_8c_af35b91bc97ceabeb64c22b8067eb86e9}{uart\+\_\+timer}}
+\item 
+int \mbox{\hyperlink{device_8c_a32c04f85e4df101174b67d023dd2841b}{R\+E\+G\+U\+L\+A\+T\+OR}}
+\item 
+int \mbox{\hyperlink{device_8c_a45284e914c3e7558b7952f6220541908}{I\+S\+T\+O\+C\+H\+N\+IK}}
+\item 
+int \mbox{\hyperlink{device_8c_a62e59172f85171cbbe13bae5b5bb4be8}{L\+O\+W\+\_\+\+L\+E\+V\+EL}}
+\item 
+int \mbox{\hyperlink{device_8c_ac27c75671b46788a91fd59d1522f83fc}{H\+I\+G\+H\+\_\+\+L\+E\+V\+EL}}
+\item 
+int \mbox{\hyperlink{device_8c_a135471b09f16698f71acf8b181d6ad28}{temp\+\_\+min}}
+\item 
+int \mbox{\hyperlink{device_8c_a6342455e1b4d9c1d174067c66f807e8a}{temp\+\_\+max}}
+\item 
+bool \mbox{\hyperlink{device_8c_a8f8e2af9358a9413f23cb81f749cde62}{def\+\_\+protechki}}
+\item 
+\mbox{\hyperlink{structadc__config__t}{adc\+\_\+config\+\_\+t}} \mbox{\hyperlink{device_8c_a876e83ca6f8562021041256c530707a5}{adc\+\_\+config}}
+\item 
+int \mbox{\hyperlink{device_8c_af5058dd0383c386b5025f718967b5c92}{U\+\_\+\+M\+IN}} =150
+\item 
+int \mbox{\hyperlink{device_8c_a633454f54a1d7f2439a65666d71f9271}{U\+\_\+\+M\+AX}} =220
+\item 
+int \mbox{\hyperlink{device_8c_a9aad3d974541fa952452f31a9e0933b6}{I\+\_\+\+M\+AX}} =1
+\item 
+L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}{Rele}} = N\+U\+LL
+\item 
+L\+E\+D\+\_\+\+H\+A\+N\+D\+LE \mbox{\hyperlink{device_8c_a688d8bed0897bfbb1c3c05d308430049}{light}} = N\+U\+LL
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{device_8c_ad1770c423566970050f4fd8dab511d5b}\label{device_8c_ad1770c423566970050f4fd8dab511d5b}} 
+\index{device.c@{device.c}!\_\_DEVICE\_GLOBALS@{\_\_DEVICE\_GLOBALS}}
+\index{\_\_DEVICE\_GLOBALS@{\_\_DEVICE\_GLOBALS}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{\_\_DEVICE\_GLOBALS}{\_\_DEVICE\_GLOBALS}}
+{\footnotesize\ttfamily \#define \+\_\+\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+G\+L\+O\+B\+A\+LS}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{device_8c_ae6f94500221bbbd2ee8647c6aadda397}\label{device_8c_ae6f94500221bbbd2ee8647c6aadda397}} 
+\index{device.c@{device.c}!app\_init@{app\_init}}
+\index{app\_init@{app\_init}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{app\_init()}{app\_init()}}
+{\footnotesize\ttfamily V\+O\+ID app\+\_\+init (\begin{DoxyParamCaption}\item[{V\+O\+ID}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{device_8c_a60082df9155e4151a9fd97148d281d2c}\label{device_8c_a60082df9155e4151a9fd97148d281d2c}} 
+\index{device.c@{device.c}!device\_cb@{device\_cb}}
+\index{device\_cb@{device\_cb}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{device\_cb()}{device\_cb()}}
+{\footnotesize\ttfamily V\+O\+ID device\+\_\+cb (\begin{DoxyParamCaption}\item[{S\+M\+A\+R\+T\+\_\+\+C\+M\+D\+\_\+E}]{cmd,  }\item[{c\+J\+S\+ON $\ast$}]{root }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{device_8c_a75875fe7a216fe6f8c9b710d135f2fd9}\label{device_8c_a75875fe7a216fe6f8c9b710d135f2fd9}} 
+\index{device.c@{device.c}!device\_differ\_init@{device\_differ\_init}}
+\index{device\_differ\_init@{device\_differ\_init}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{device\_differ\_init()}{device\_differ\_init()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET device\+\_\+differ\+\_\+init (\begin{DoxyParamCaption}\item[{V\+O\+ID}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 4
+Here is the caller graph for this function\+:
+% FIG 5
+\mbox{\Hypertarget{device_8c_a34ddeee4cc5bae7c1403af00c5233aab}\label{device_8c_a34ddeee4cc5bae7c1403af00c5233aab}} 
+\index{device.c@{device.c}!device\_init@{device\_init}}
+\index{device\_init@{device\_init}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{device\_init()}{device\_init()}}
+{\footnotesize\ttfamily O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET device\+\_\+init (\begin{DoxyParamCaption}\item[{V\+O\+ID}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 6
+\mbox{\Hypertarget{device_8c_a88c4525075a07addbbeff1394612384f}\label{device_8c_a88c4525075a07addbbeff1394612384f}} 
+\index{device.c@{device.c}!dp\_qeury\_cb@{dp\_qeury\_cb}}
+\index{dp\_qeury\_cb@{dp\_qeury\_cb}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{dp\_qeury\_cb()}{dp\_qeury\_cb()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID dp\+\_\+qeury\+\_\+cb (\begin{DoxyParamCaption}\item[{IN C\+O\+N\+ST T\+Y\+\_\+\+D\+P\+\_\+\+Q\+U\+E\+R\+Y\+\_\+S $\ast$}]{dp\+\_\+qry }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 7
+\mbox{\Hypertarget{device_8c_a27d1f2bb1f99c299d67d775af6823de0}\label{device_8c_a27d1f2bb1f99c299d67d775af6823de0}} 
+\index{device.c@{device.c}!gpio\_func\_test@{gpio\_func\_test}}
+\index{gpio\_func\_test@{gpio\_func\_test}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{gpio\_func\_test()}{gpio\_func\_test()}}
+{\footnotesize\ttfamily B\+O\+OL gpio\+\_\+func\+\_\+test (\begin{DoxyParamCaption}\item[{V\+O\+ID}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{device_8c_aa6212240c25ce6a1f019122c7e2c69fe}\label{device_8c_aa6212240c25ce6a1f019122c7e2c69fe}} 
+\index{device.c@{device.c}!heart\_bit\_timer\_cb@{heart\_bit\_timer\_cb}}
+\index{heart\_bit\_timer\_cb@{heart\_bit\_timer\_cb}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{heart\_bit\_timer\_cb()}{heart\_bit\_timer\_cb()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID heart\+\_\+bit\+\_\+timer\+\_\+cb (\begin{DoxyParamCaption}\item[{U\+I\+NT}]{timer\+ID,  }\item[{P\+V\+O\+ID}]{p\+Timer\+Arg }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 8
+Here is the caller graph for this function\+:
+% FIG 9
+\mbox{\Hypertarget{device_8c_abc0a168fc5d3d0f96e2cd8567c4ab7a6}\label{device_8c_abc0a168fc5d3d0f96e2cd8567c4ab7a6}} 
+\index{device.c@{device.c}!key\_process@{key\_process}}
+\index{key\_process@{key\_process}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{key\_process()}{key\_process()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID key\+\_\+process (\begin{DoxyParamCaption}\item[{I\+NT}]{gpio\+\_\+no,  }\item[{P\+U\+S\+H\+\_\+\+K\+E\+Y\+\_\+\+T\+Y\+P\+E\+\_\+E}]{type,  }\item[{I\+NT}]{cnt }\end{DoxyParamCaption})}
+
+
+
+system func 
+
+Here is the caller graph for this function\+:
+% FIG 10
+\mbox{\Hypertarget{device_8c_a99cc18fde856e86f9b63df1a5b167d21}\label{device_8c_a99cc18fde856e86f9b63df1a5b167d21}} 
+\index{device.c@{device.c}!pre\_app\_init@{pre\_app\_init}}
+\index{pre\_app\_init@{pre\_app\_init}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{pre\_app\_init()}{pre\_app\_init()}}
+{\footnotesize\ttfamily V\+O\+ID pre\+\_\+app\+\_\+init (\begin{DoxyParamCaption}\item[{V\+O\+ID}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{device_8c_a6e0ff9a026e9f4d42ddd6aa1aca548ca}\label{device_8c_a6e0ff9a026e9f4d42ddd6aa1aca548ca}} 
+\index{device.c@{device.c}!prod\_test@{prod\_test}}
+\index{prod\_test@{prod\_test}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{prod\_test()}{prod\_test()}}
+{\footnotesize\ttfamily V\+O\+ID prod\+\_\+test (\begin{DoxyParamCaption}\item[{B\+O\+OL}]{flag,  }\item[{C\+H\+AR}]{rssi }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 11
+\mbox{\Hypertarget{device_8c_af39d1ebd65f0adc820bd6ded9aae5a98}\label{device_8c_af39d1ebd65f0adc820bd6ded9aae5a98}} 
+\index{device.c@{device.c}!raw\_read\_adc\_value@{raw\_read\_adc\_value}}
+\index{raw\_read\_adc\_value@{raw\_read\_adc\_value}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{raw\_read\_adc\_value()}{raw\_read\_adc\_value()}}
+{\footnotesize\ttfamily int raw\+\_\+read\+\_\+adc\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 12
+Here is the caller graph for this function\+:
+% FIG 13
+\mbox{\Hypertarget{device_8c_af74410df7bafa98ffd560a734caaa73a}\label{device_8c_af74410df7bafa98ffd560a734caaa73a}} 
+\index{device.c@{device.c}!reaction@{reaction}}
+\index{reaction@{reaction}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{reaction()}{reaction()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID reaction (\begin{DoxyParamCaption}\item[{U\+I\+NT}]{dpid,  }\item[{U\+I\+NT}]{dps,  }\item[{char $\ast$}]{dps\+\_\+char }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 14
+Here is the caller graph for this function\+:
+% FIG 15
+\mbox{\Hypertarget{device_8c_ab6d19f0c6cf8befff2935f3434cc810a}\label{device_8c_ab6d19f0c6cf8befff2935f3434cc810a}} 
+\index{device.c@{device.c}!read\_adc\_value@{read\_adc\_value}}
+\index{read\_adc\_value@{read\_adc\_value}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{read\_adc\_value()}{read\_adc\_value()}}
+{\footnotesize\ttfamily int read\+\_\+adc\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 16
+Here is the caller graph for this function\+:
+% FIG 17
+\mbox{\Hypertarget{device_8c_a437ad92decca14e2bf272521111cf9fa}\label{device_8c_a437ad92decca14e2bf272521111cf9fa}} 
+\index{device.c@{device.c}!set\_firmware\_tp@{set\_firmware\_tp}}
+\index{set\_firmware\_tp@{set\_firmware\_tp}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{set\_firmware\_tp()}{set\_firmware\_tp()}}
+{\footnotesize\ttfamily V\+O\+ID set\+\_\+firmware\+\_\+tp (\begin{DoxyParamCaption}\item[{IN O\+UT C\+H\+AR $\ast$}]{firm\+\_\+name,  }\item[{IN O\+UT C\+H\+AR $\ast$}]{firm\+\_\+ver }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{device_8c_afc98ada4996b97d8c2ad940ea6e361cc}\label{device_8c_afc98ada4996b97d8c2ad940ea6e361cc}} 
+\index{device.c@{device.c}!uart\_timer\_cb@{uart\_timer\_cb}}
+\index{uart\_timer\_cb@{uart\_timer\_cb}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{uart\_timer\_cb()}{uart\_timer\_cb()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID uart\+\_\+timer\+\_\+cb (\begin{DoxyParamCaption}\item[{U\+I\+NT}]{timer\+ID,  }\item[{P\+V\+O\+ID}]{p\+Timer\+Arg }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 18
+Here is the caller graph for this function\+:
+% FIG 19
+\mbox{\Hypertarget{device_8c_ac06077003b3f22f5ce97afcd5ee48d73}\label{device_8c_ac06077003b3f22f5ce97afcd5ee48d73}} 
+\index{device.c@{device.c}!wfl\_timer\_cb@{wfl\_timer\_cb}}
+\index{wfl\_timer\_cb@{wfl\_timer\_cb}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{wfl\_timer\_cb()}{wfl\_timer\_cb()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID wfl\+\_\+timer\+\_\+cb (\begin{DoxyParamCaption}\item[{U\+I\+NT}]{timer\+ID,  }\item[{P\+V\+O\+ID}]{p\+Timer\+Arg }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 20
+\mbox{\Hypertarget{device_8c_a2e1fd2d2d5bd6e3be79fa36c32a01b00}\label{device_8c_a2e1fd2d2d5bd6e3be79fa36c32a01b00}} 
+\index{device.c@{device.c}!wifi\_rssi\_scan@{wifi\_rssi\_scan}}
+\index{wifi\_rssi\_scan@{wifi\_rssi\_scan}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_rssi\_scan()}{wifi\_rssi\_scan()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+IC V\+O\+ID wifi\+\_\+rssi\+\_\+scan (\begin{DoxyParamCaption}\item[{O\+P\+E\+R\+A\+T\+E\+\_\+\+R\+ET $\ast$}]{ret,  }\item[{C\+H\+AR $\ast$}]{rssi }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{device_8c_a876e83ca6f8562021041256c530707a5}\label{device_8c_a876e83ca6f8562021041256c530707a5}} 
+\index{device.c@{device.c}!adc\_config@{adc\_config}}
+\index{adc\_config@{adc\_config}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{adc\_config}{adc\_config}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structadc__config__t}{adc\+\_\+config\+\_\+t}} adc\+\_\+config}
+
+adc config struct \mbox{\Hypertarget{device_8c_a8f8e2af9358a9413f23cb81f749cde62}\label{device_8c_a8f8e2af9358a9413f23cb81f749cde62}} 
+\index{device.c@{device.c}!def\_protechki@{def\_protechki}}
+\index{def\_protechki@{def\_protechki}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{def\_protechki}{def\_protechki}}
+{\footnotesize\ttfamily bool def\+\_\+protechki}
+
+\mbox{\Hypertarget{device_8c_a70b0131f7fd3ea86b9398bdc45bcd9c5}\label{device_8c_a70b0131f7fd3ea86b9398bdc45bcd9c5}} 
+\index{device.c@{device.c}!heart\_bit\_timer@{heart\_bit\_timer}}
+\index{heart\_bit\_timer@{heart\_bit\_timer}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{heart\_bit\_timer}{heart\_bit\_timer}}
+{\footnotesize\ttfamily T\+I\+M\+E\+R\+\_\+\+ID heart\+\_\+bit\+\_\+timer}
+
+timer with checking the regulators and taking readings from sensors \mbox{\Hypertarget{device_8c_ac27c75671b46788a91fd59d1522f83fc}\label{device_8c_ac27c75671b46788a91fd59d1522f83fc}} 
+\index{device.c@{device.c}!HIGH\_LEVEL@{HIGH\_LEVEL}}
+\index{HIGH\_LEVEL@{HIGH\_LEVEL}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{HIGH\_LEVEL}{HIGH\_LEVEL}}
+{\footnotesize\ttfamily int H\+I\+G\+H\+\_\+\+L\+E\+V\+EL}
+
+$<$H\+I\+G\+H\+\_\+\+L\+E\+V\+EL source leak \mbox{\Hypertarget{device_8c_a9aad3d974541fa952452f31a9e0933b6}\label{device_8c_a9aad3d974541fa952452f31a9e0933b6}} 
+\index{device.c@{device.c}!I\_MAX@{I\_MAX}}
+\index{I\_MAX@{I\_MAX}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{I\_MAX}{I\_MAX}}
+{\footnotesize\ttfamily int I\+\_\+\+M\+AX =1}
+
+\mbox{\Hypertarget{device_8c_a45284e914c3e7558b7952f6220541908}\label{device_8c_a45284e914c3e7558b7952f6220541908}} 
+\index{device.c@{device.c}!ISTOCHNIK@{ISTOCHNIK}}
+\index{ISTOCHNIK@{ISTOCHNIK}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{ISTOCHNIK}{ISTOCHNIK}}
+{\footnotesize\ttfamily int I\+S\+T\+O\+C\+H\+N\+IK}
+
+$<$ source leak \mbox{\Hypertarget{device_8c_a688d8bed0897bfbb1c3c05d308430049}\label{device_8c_a688d8bed0897bfbb1c3c05d308430049}} 
+\index{device.c@{device.c}!light@{light}}
+\index{light@{light}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{light}{light}}
+{\footnotesize\ttfamily L\+E\+D\+\_\+\+H\+A\+N\+D\+LE light = N\+U\+LL}
+
+wifi led indicator \mbox{\Hypertarget{device_8c_a62e59172f85171cbbe13bae5b5bb4be8}\label{device_8c_a62e59172f85171cbbe13bae5b5bb4be8}} 
+\index{device.c@{device.c}!LOW\_LEVEL@{LOW\_LEVEL}}
+\index{LOW\_LEVEL@{LOW\_LEVEL}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{LOW\_LEVEL}{LOW\_LEVEL}}
+{\footnotesize\ttfamily int L\+O\+W\+\_\+\+L\+E\+V\+EL}
+
+$<$L\+O\+W\+\_\+\+L\+E\+V\+EL source leak \mbox{\Hypertarget{device_8c_a32c04f85e4df101174b67d023dd2841b}\label{device_8c_a32c04f85e4df101174b67d023dd2841b}} 
+\index{device.c@{device.c}!REGULATOR@{REGULATOR}}
+\index{REGULATOR@{REGULATOR}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{REGULATOR}{REGULATOR}}
+{\footnotesize\ttfamily int R\+E\+G\+U\+L\+A\+T\+OR}
+
+\mbox{\Hypertarget{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}\label{device_8c_a6337d7ce1d7559ee9ba0cc6c0d928dca}} 
+\index{device.c@{device.c}!Rele@{Rele}}
+\index{Rele@{Rele}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{Rele}{Rele}}
+{\footnotesize\ttfamily L\+E\+D\+\_\+\+H\+A\+N\+D\+LE Rele = N\+U\+LL}
+
+\mbox{\Hypertarget{device_8c_a90d1885b2334cfaf4c8fb691764d32da}\label{device_8c_a90d1885b2334cfaf4c8fb691764d32da}} 
+\index{device.c@{device.c}!sys\_timer@{sys\_timer}}
+\index{sys\_timer@{sys\_timer}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{sys\_timer}{sys\_timer}}
+{\footnotesize\ttfamily T\+I\+M\+E\+R\+\_\+\+ID sys\+\_\+timer}
+
+wf timer \mbox{\Hypertarget{device_8c_a6342455e1b4d9c1d174067c66f807e8a}\label{device_8c_a6342455e1b4d9c1d174067c66f807e8a}} 
+\index{device.c@{device.c}!temp\_max@{temp\_max}}
+\index{temp\_max@{temp\_max}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{temp\_max}{temp\_max}}
+{\footnotesize\ttfamily int temp\+\_\+max}
+
+\mbox{\Hypertarget{device_8c_a135471b09f16698f71acf8b181d6ad28}\label{device_8c_a135471b09f16698f71acf8b181d6ad28}} 
+\index{device.c@{device.c}!temp\_min@{temp\_min}}
+\index{temp\_min@{temp\_min}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{temp\_min}{temp\_min}}
+{\footnotesize\ttfamily int temp\+\_\+min}
+
+\mbox{\Hypertarget{device_8c_a633454f54a1d7f2439a65666d71f9271}\label{device_8c_a633454f54a1d7f2439a65666d71f9271}} 
+\index{device.c@{device.c}!U\_MAX@{U\_MAX}}
+\index{U\_MAX@{U\_MAX}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{U\_MAX}{U\_MAX}}
+{\footnotesize\ttfamily int U\+\_\+\+M\+AX =220}
+
+\mbox{\Hypertarget{device_8c_af5058dd0383c386b5025f718967b5c92}\label{device_8c_af5058dd0383c386b5025f718967b5c92}} 
+\index{device.c@{device.c}!U\_MIN@{U\_MIN}}
+\index{U\_MIN@{U\_MIN}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{U\_MIN}{U\_MIN}}
+{\footnotesize\ttfamily int U\+\_\+\+M\+IN =150}
+
+\mbox{\Hypertarget{device_8c_af35b91bc97ceabeb64c22b8067eb86e9}\label{device_8c_af35b91bc97ceabeb64c22b8067eb86e9}} 
+\index{device.c@{device.c}!uart\_timer@{uart\_timer}}
+\index{uart\_timer@{uart\_timer}!device.c@{device.c}}
+\doxysubsubsection{\texorpdfstring{uart\_timer}{uart\_timer}}
+{\footnotesize\ttfamily T\+I\+M\+E\+R\+\_\+\+ID uart\+\_\+timer}
+
+timer with current protection and energy reading 
