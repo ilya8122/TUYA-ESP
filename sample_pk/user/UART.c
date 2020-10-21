@@ -11,6 +11,13 @@
 #include <math.h>
 #include "define.h"
 
+struct struct_t
+{     
+        int  u1:24;
+        int  u2:24;
+        int  i1:24;
+        int  i2:24;
+}__attribute__((packed)) str;
 
 
 struct struct_type //основная структура
@@ -22,11 +29,11 @@ struct struct_type //основная структура
 } Energy_struct;
 
 void read_uart() {
-  int i, i1;
+  int i, i1,i2;
   uint16 a;
   uint8 buf[50] = {0};
   uint8 current_buf[24] = {0};
-
+ 
   Energy_struct.U = 0;//зануляем все значения
   Energy_struct.I = 0;
   Energy_struct.P_calc = 0;
@@ -40,35 +47,32 @@ void read_uart() {
       int l = 50 - i;
       if (buf[i] == 0x55 && l >= 24 && buf[i + 1] == 0x5a) {//если начало пакета найдено и пакет целый
         PR_DEBUG("Uart current_buf FOUNDED");
-        for (i1 = 0; i1 <= 23; i1++) {//переписчываем из общего буфера корректный пакет
+        for (i1 = 0; i1 <= 23; i1++)
+	 {//переписчываем из общего буфера корректный пакет
           current_buf[i1] = buf[i + i1];
-         
-        }
+       	 }
 
-        int u1 = get_value_3(current_buf[2], current_buf[3], current_buf[4]);//преобразуем 3 байта коффецента напряжения в 1 целочисленную переменную (а=1 и=7 г=4 результат=174)
-        int u2 = get_value_3(current_buf[5], current_buf[6], current_buf[7]);//преобразуем 3 байта цикла напряжения
-        // PR_DEBUG("U1 %d,%f",u1,u2);
-        // PR_DEBUG("U2 %d,%f",u2,u2);
-        //  PR_DEBUG("U %d",U);
-        Energy_struct.U = u1 / u2;
+uint8 U_I_buf[12]={current_buf[2], current_buf[3], current_buf[4],current_buf[5], current_buf[6], current_buf[7],current_buf[8], current_buf[9], current_buf[10],current_buf[11],current_buf[12],
+current_buf[13]};//   
+
+  unsigned char  buf[12];
+    for(i2=0;i<sizeof(buf);i++)
+    {
+    int g=(sizeof(buf)-i-1);
+    buf[i]=U_I_buf[g];
+    }
+    
+struct struct_t *vat=(struct struct_t*)&buf;      
+
+        Energy_struct.U = vat->u2/vat->u1;
 
         if (Energy_struct.U != 0) {
-          int I1 = get_value_3(current_buf[8], current_buf[9], current_buf[10]);//аналогично
-          int I2 =
-              get_value_3(current_buf[11], current_buf[12], current_buf[13]);//аналогично
-          // PR_DEBUG("I1 %d,%f",I1,I1);
-          // PR_DEBUG("I2 %d,%f",I2,I2);
-          // PR_DEBUG("I %d",I);
-          Energy_struct.I = (float)I1 / (float)I2;
+        
+          Energy_struct.I = ((float)(vat->i2)/(float)(vat->i1));
 
-          int P1 =
-              get_value_3(current_buf[14], current_buf[15], current_buf[16]);//аналогично
-          int P2 =
-              get_value_3(current_buf[17], current_buf[18], current_buf[19]);//аналогично
-          // PR_DEBUG("P1 %d,%f",P1,P1);
-          // PR_DEBUG("P2 %d,%f",P2,P2);
-          // PR_DEBUG("P %d",P);
+        
           Energy_struct.P_calc = (float) Energy_struct.U * Energy_struct.I;
+
     float p_buf = Energy_struct.P_calc / 1000 / 3600 / (1000 / ENERGY_TIMER_PERIOD);//так как считываем 4 раза в секунду
    Energy_struct.ENERGY = Energy_struct.ENERGY + p_buf;
         }

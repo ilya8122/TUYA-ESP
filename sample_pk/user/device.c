@@ -512,6 +512,7 @@ STATIC OPERATE_RET device_differ_init(VOID)  ////system init func (can change)
   adc_config.clk_div = 8;
 
   adc_init(&adc_config);
+  init_temp();
 
   return OPRT_OK;
 }
@@ -638,6 +639,7 @@ STATIC VOID heart_bit_timer_cb(UINT timerID,
                                PVOID pTimerArg)  // my timer handle
 
 {
+
   if (tuya_get_gw_status() == STAT_WORK &&
       tuya_get_wf_status() == STAT_STA_CONN)
 

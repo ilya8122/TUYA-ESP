@@ -3,3 +3,4 @@
 #include "define.h"
 
 int get_temp(float num);
+void init_temp();
